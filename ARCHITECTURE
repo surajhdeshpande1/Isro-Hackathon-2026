@@ -4620,3 +4620,1236 @@ The final architecture should identify what competitors can easily copy, what th
 
 
 
+# TAPAS SURYA DRISHTI
+
+## ABSOLUTE MASTER BLUEPRINT PROMPT
+
+### Final Architecture, Scientific Methodology, Platform Design, Engineering, Data, AI, GIS, Security, Cloud, and Implementation Constitution
+
+You are an elite council consisting of:
+
+* Chief Product Architect
+* Chief Systems Architect
+* Chief Geospatial Architect
+* Chief Climate Scientist
+* Chief Urban Climatologist
+* Chief Remote Sensing Scientist
+* Chief Earth Observation Scientist
+* Chief GIS Engineer
+* Chief AI Architect
+* Chief MLOps Architect
+* Chief Data Architect
+* Chief Cloud Architect
+* Chief Security Architect
+* Chief Infrastructure Architect
+* Chief Digital Twin Architect
+* Chief Platform Architect
+* Chief DevOps Architect
+* Chief Economist
+* Chief Urban Planner
+* Chief Risk Analyst
+* Chief Decision Scientist
+
+Your responsibility is to generate the complete production-ready blueprint for TAPAS SURYA DRISHTI.
+
+The objective is not to generate ideas.
+
+The objective is not to generate concepts.
+
+The objective is not to generate mockups.
+
+The objective is to produce the definitive implementation blueprint for a venture-scale Urban Climate Operating System capable of analyzing any city in India and transforming it into a living climate intelligence digital twin.
+
+The final output must be detailed enough for senior engineering teams, climate scientists, GIS experts, infrastructure engineers, and AI teams to begin implementation immediately.
+
+Every subsystem must be:
+
+* Explainable
+* Auditable
+* Reproducible
+* Scientifically Defensible
+* Scalable
+* Secure
+* Modular
+* Observable
+* Maintainable
+* Production Ready
+
+No black-box systems are permitted.
+
+Every score, recommendation, forecast, ranking, financial estimate, and intervention must expose assumptions, evidence, confidence, uncertainty, methodology, and traceability.
+
+---
+
+# SECTION 01
+
+## PRODUCT REQUIREMENTS ARCHITECTURE
+
+Generate:
+
+Product Vision
+
+Product Mission
+
+Product Principles
+
+Product Constitution
+
+Stakeholder Analysis
+
+User Personas
+
+User Journeys
+
+User Stories
+
+Functional Requirements
+
+Non-Functional Requirements
+
+Business Requirements
+
+Technical Requirements
+
+Scientific Requirements
+
+Performance Requirements
+
+Availability Requirements
+
+Security Requirements
+
+Compliance Requirements
+
+Success Metrics
+
+North Star Metrics
+
+Product KPIs
+
+Scientific KPIs
+
+Municipal KPIs
+
+Platform KPIs
+
+Investor KPIs
+
+---
+
+# SECTION 02
+
+## COMPLETE SYSTEM ARCHITECTURE
+
+Design:
+
+Frontend Layer
+
+Backend Layer
+
+GIS Layer
+
+AI Layer
+
+Data Layer
+
+Research Layer
+
+Evidence Layer
+
+Forecast Layer
+
+Optimization Layer
+
+Monitoring Layer
+
+Knowledge Graph Layer
+
+Digital Twin Layer
+
+Copilot Layer
+
+Security Layer
+
+Cloud Layer
+
+Generate:
+
+Component Diagrams
+
+System Diagrams
+
+Sequence Diagrams
+
+Data Flow Diagrams
+
+Event Flow Diagrams
+
+Service Dependency Diagrams
+
+Scalability Diagrams
+
+Failure Recovery Diagrams
+
+Service Interaction Diagrams
+
+---
+
+# SECTION 03
+
+## FRONTEND ARCHITECTURE
+
+Technology:
+
+Next.js
+
+React
+
+TypeScript
+
+TailwindCSS
+
+ShadCN
+
+Framer Motion
+
+Mapbox
+
+Deck.GL
+
+Cesium
+
+Three.js
+
+Design:
+
+Application Shell
+
+Layout System
+
+Navigation System
+
+Command Center
+
+Digital Twin Interface
+
+Heat Intelligence Interface
+
+DNA Interface
+
+Research Interface
+
+Evidence Interface
+
+Optimization Interface
+
+Financial Interface
+
+Roadmap Interface
+
+Forecast Interface
+
+Copilot Interface
+
+Generate:
+
+Screen Architecture
+
+State Architecture
+
+UI Components
+
+Design Tokens
+
+Animation System
+
+Interaction System
+
+Accessibility Standards
+
+Performance Standards
+
+Responsive Strategy
+
+---
+
+# SECTION 04
+
+## BACKEND ARCHITECTURE
+
+Technology:
+
+FastAPI
+
+Python
+
+GeoPandas
+
+Rasterio
+
+GDAL
+
+Shapely
+
+Scikit-Learn
+
+PyTorch
+
+Design:
+
+API Gateway
+
+Service Layer
+
+Business Logic Layer
+
+Data Processing Layer
+
+Geospatial Processing Layer
+
+Inference Layer
+
+Research Layer
+
+Recommendation Layer
+
+Financial Layer
+
+Forecast Layer
+
+Generate:
+
+Service Contracts
+
+Internal APIs
+
+External APIs
+
+Event Architecture
+
+Message Architecture
+
+Caching Strategy
+
+Failure Handling
+
+Retry Policies
+
+---
+
+# SECTION 05
+
+## DATABASE ARCHITECTURE
+
+Technology:
+
+PostgreSQL
+
+PostGIS
+
+Redis
+
+Design complete schemas for:
+
+Users
+
+Organizations
+
+Projects
+
+Cities
+
+Boundaries
+
+Buildings
+
+Roads
+
+Water Bodies
+
+Vegetation
+
+Infrastructure
+
+Population
+
+Climate Layers
+
+Heat Layers
+
+Hotspots
+
+DNA Profiles
+
+Research Dossiers
+
+Evidence Chains
+
+Recommendations
+
+Optimization Results
+
+Financial Models
+
+Roadmaps
+
+Forecasts
+
+Reports
+
+Monitoring Events
+
+Alerts
+
+Knowledge Graph Nodes
+
+Knowledge Graph Relationships
+
+For each entity generate:
+
+Columns
+
+Data Types
+
+Constraints
+
+Indexes
+
+Partitioning Strategy
+
+Retention Policies
+
+Scalability Policies
+
+Relationships
+
+ER Models
+
+---
+
+# SECTION 06
+
+## GIS ARCHITECTURE
+
+Design:
+
+Vector Tile Pipeline
+
+Raster Pipeline
+
+Spatial Indexing
+
+Temporal GIS
+
+Heat Intelligence Layers
+
+Digital Twin Layers
+
+Forecast Layers
+
+Risk Layers
+
+Intervention Layers
+
+Support:
+
+Buildings
+
+Roads
+
+Water
+
+Vegetation
+
+Administrative Zones
+
+Utilities
+
+Transit Networks
+
+Industrial Assets
+
+Commercial Assets
+
+Residential Assets
+
+Generate:
+
+GIS Processing Pipeline
+
+Spatial Analytics Pipeline
+
+Raster Analytics Pipeline
+
+Temporal Analytics Pipeline
+
+Geospatial Machine Learning Pipeline
+
+---
+
+# SECTION 07
+
+## DATA ACQUISITION ARCHITECTURE
+
+For every source define:
+
+Provider
+
+Coverage
+
+Resolution
+
+Update Frequency
+
+Reliability
+
+Licensing
+
+Cost
+
+Validation Strategy
+
+Confidence Strategy
+
+Versioning Strategy
+
+Include:
+
+Google Maps
+
+Google Places
+
+Google Geocoding
+
+OpenStreetMap
+
+Sentinel
+
+Landsat
+
+MODIS
+
+ERA5
+
+ISRO Data Sources
+
+NASA Data Sources
+
+Municipal GIS
+
+Census Data
+
+Environmental Data
+
+Infrastructure Data
+
+Research Data
+
+Scientific Literature
+
+Generate:
+
+Data Ingestion Pipelines
+
+ETL Pipelines
+
+Data Validation Pipelines
+
+Data Governance Pipelines
+
+---
+
+# SECTION 08
+
+## DIGITAL TWIN ARCHITECTURE
+
+Every city becomes a living digital twin.
+
+Model:
+
+Buildings
+
+Roads
+
+Water
+
+Vegetation
+
+Transit
+
+Utilities
+
+Infrastructure
+
+Population
+
+Environment
+
+Climate
+
+Economics
+
+Every object contains:
+
+Geometry
+
+Attributes
+
+Relationships
+
+Thermal State
+
+Risk State
+
+Intervention State
+
+Economic State
+
+Forecast State
+
+Generate:
+
+Object Models
+
+Lifecycle Models
+
+Synchronization Models
+
+Versioning Models
+
+State Management Models
+
+---
+
+# SECTION 09
+
+## HOTSPOT SCIENTIFIC METHODOLOGY
+
+Inputs:
+
+Land Surface Temperature
+
+NDVI
+
+NDBI
+
+Albedo
+
+Building Density
+
+Road Density
+
+Impervious Surface Ratio
+
+Population Density
+
+Industrial Activity
+
+Humidity
+
+Wind
+
+Water Availability
+
+Urban Morphology
+
+Heat Vulnerability
+
+Generate:
+
+Feature Engineering Framework
+
+Spatial Analysis Framework
+
+Temporal Analysis Framework
+
+Anomaly Detection Framework
+
+Heat Island Framework
+
+Clustering Framework
+
+Hotspot Detection Framework
+
+Hotspot Classification Framework
+
+Hotspot Ranking Framework
+
+Generate mathematical definitions for:
+
+Heat Severity
+
+Heat Risk
+
+Heat Exposure
+
+Heat Priority
+
+Heat Vulnerability
+
+Heat Resilience
+
+Generate:
+
+Formulas
+
+Pseudocode
+
+Validation Rules
+
+Uncertainty Models
+
+Confidence Models
+
+Explainability Models
+
+---
+
+# SECTION 10
+
+## SURYA DNA SCIENCE
+
+Calculate:
+
+Vegetation Contribution
+
+Road Contribution
+
+Traffic Contribution
+
+Industrial Contribution
+
+Building Contribution
+
+Water Contribution
+
+Urban Expansion Contribution
+
+Anthropogenic Heat Contribution
+
+Climate Stress Contribution
+
+Generate:
+
+Causal Attribution Framework
+
+Contribution Models
+
+Weighting Models
+
+Confidence Models
+
+Explainability Models
+
+Root Cause Trees
+
+Contribution Equations
+
+Uncertainty Bounds
+
+---
+
+# SECTION 11
+
+## RESEARCH ENGINE ARCHITECTURE
+
+Design:
+
+Historical Research Engine
+
+Case Study Engine
+
+Similarity Matching Engine
+
+Global Analog Discovery Engine
+
+Intervention Knowledge Engine
+
+Transferability Engine
+
+Generate:
+
+Research Pipelines
+
+Research Storage
+
+Research Ranking
+
+Research Validation
+
+Research Confidence
+
+Research Explainability
+
+Research Knowledge Graph Integration
+
+---
+
+# SECTION 12
+
+## EVIDENCE ENGINE
+
+Design:
+
+Evidence Graph
+
+Evidence Chains
+
+Evidence Reliability Framework
+
+Evidence Ranking Framework
+
+Evidence Weighting Framework
+
+Evidence Confidence Framework
+
+Generate:
+
+Evidence Scores
+
+Evidence Confidence
+
+Evidence Traceability
+
+Evidence Explainability
+
+Evidence APIs
+
+Evidence Visualizations
+
+---
+
+# SECTION 13
+
+## DEFENSE ENGINE
+
+Challenge all conclusions.
+
+Generate:
+
+Alternative Hypotheses
+
+Counterfactual Analysis
+
+Sensitivity Analysis
+
+Stress Testing
+
+Uncertainty Analysis
+
+Validation Framework
+
+Scientific Defense Framework
+
+Recommendation Defense Framework
+
+Only validated outputs may be published.
+
+---
+
+# SECTION 14
+
+## RECOMMENDATION ENGINE
+
+Generate:
+
+Intervention Libraries
+
+Intervention Suitability Models
+
+Intervention Ranking Models
+
+Intervention Confidence Models
+
+Cooling Impact Models
+
+Implementation Models
+
+Risk Models
+
+Explainability Models
+
+Support:
+
+Cool Roofs
+
+Reflective Pavements
+
+Urban Forestry
+
+Green Corridors
+
+Blue-Green Infrastructure
+
+Lake Restoration
+
+River Restoration
+
+District Cooling
+
+Industrial Retrofits
+
+Passive Cooling
+
+Policy Interventions
+
+Infrastructure Upgrades
+
+---
+
+# SECTION 15
+
+## OPTIMIZATION ENGINE
+
+Design:
+
+Multi-Objective Optimization
+
+Portfolio Optimization
+
+Constraint Optimization
+
+Trade-Off Analysis
+
+Decision Support
+
+Optimize:
+
+Cooling
+
+Cost
+
+ROI
+
+Risk
+
+Resilience
+
+Implementation Time
+
+Environmental Impact
+
+Social Impact
+
+Generate optimization algorithms and workflows.
+
+---
+
+# SECTION 16
+
+## FINANCIAL ENGINE
+
+Calculate:
+
+CAPEX
+
+OPEX
+
+Maintenance
+
+Healthcare Savings
+
+Energy Savings
+
+Productivity Gains
+
+Carbon Savings
+
+Property Value Gains
+
+Avoided Infrastructure Losses
+
+NPV
+
+IRR
+
+Payback
+
+Cost-Benefit Ratio
+
+Generate:
+
+Financial Models
+
+Financial Assumptions
+
+Financial Confidence Models
+
+Financial Sensitivity Analysis
+
+Financial Explainability
+
+---
+
+# SECTION 17
+
+## FORECASTING ENGINE
+
+Generate forecasts for:
+
+2030
+
+2035
+
+2040
+
+2045
+
+2050
+
+Model:
+
+Temperature
+
+Heat Risk
+
+Population Exposure
+
+Water Stress
+
+Infrastructure Stress
+
+Economic Losses
+
+Energy Demand
+
+Healthcare Burden
+
+Intervention Effectiveness
+
+Generate:
+
+Scenario Models
+
+Forecast Models
+
+Confidence Models
+
+Validation Models
+
+Uncertainty Models
+
+Explainability Models
+
+---
+
+# SECTION 18
+
+## KNOWLEDGE GRAPH ARCHITECTURE
+
+Design:
+
+Node Types
+
+Relationship Types
+
+Reasoning Framework
+
+Cross-City Learning Framework
+
+Graph Analytics
+
+Graph Explainability
+
+Graph Search
+
+Graph Intelligence
+
+Model relationships among:
+
+Cities
+
+Hotspots
+
+Buildings
+
+Roads
+
+Infrastructure
+
+Population
+
+Interventions
+
+Evidence
+
+Research
+
+Financials
+
+Forecasts
+
+Policies
+
+---
+
+# SECTION 19
+
+## AI & MLOPS ARCHITECTURE
+
+Design:
+
+Feature Store
+
+Training Pipelines
+
+Inference Pipelines
+
+Model Registry
+
+Experiment Tracking
+
+Model Monitoring
+
+Model Evaluation
+
+Retraining Pipelines
+
+Versioning
+
+Support:
+
+Hotspot Models
+
+DNA Models
+
+Research Models
+
+Evidence Models
+
+Forecast Models
+
+Optimization Models
+
+Copilot Models
+
+---
+
+# SECTION 20
+
+## SECURITY & GOVERNANCE
+
+Design:
+
+Authentication
+
+Authorization
+
+RBAC
+
+Audit Logging
+
+Encryption
+
+Secrets Management
+
+Data Governance
+
+Privacy Controls
+
+Compliance Framework
+
+Backup Strategy
+
+Disaster Recovery
+
+Business Continuity
+
+Security Monitoring
+
+Threat Detection
+
+---
+
+# SECTION 21
+
+## CLOUD & DEVOPS
+
+Target Platform:
+
+AWS
+
+Design:
+
+Kubernetes Architecture
+
+Docker Architecture
+
+CI/CD Pipelines
+
+Infrastructure as Code
+
+Monitoring
+
+Observability
+
+Logging
+
+Alerting
+
+Autoscaling
+
+Multi-Region Deployment
+
+Cost Optimization
+
+High Availability
+
+Fault Tolerance
+
+---
+
+# SECTION 22
+
+## IMPLEMENTATION MASTER PLAN
+
+Generate:
+
+Repository Structure
+
+Monorepo Architecture
+
+Folder Structure
+
+API Contracts
+
+Database Migration Strategy
+
+Service Development Order
+
+Testing Strategy
+
+QA Strategy
+
+Release Strategy
+
+12-Week MVP Plan
+
+6-Month Roadmap
+
+12-Month Roadmap
+
+24-Month Roadmap
+
+---
+
+# FINAL OUTPUT REQUIREMENT
+
+The output must be a complete production-grade implementation blueprint for TAPAS SURYA DRISHTI.
+
+It must contain enough detail for:
+
+* Product Teams
+* Engineering Teams
+* GIS Teams
+* Climate Science Teams
+* Data Teams
+* AI Teams
+* Security Teams
+* DevOps Teams
+* Investors
+* Municipal Stakeholders
+
+to execute the platform with minimal ambiguity.
+
+The platform must emerge as a defensible Urban Climate Operating System rather than a simple heatmap application.
