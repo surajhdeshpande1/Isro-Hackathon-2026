@@ -9477,3 +9477,1062 @@ Validation Status
 Uncertainty
 
 Build TAPAS SURYA DRISHTI as a production-grade Urban Climate Operating System capable of transforming any Indian city into a climate intelligence digital twin and generating defensible hotspot analysis, recommendations, financial models, and implementation roadmaps.
+
+
+
+
+
+
+# TAPAS SURYA DRISHTI
+
+# ULTIMATE MAP INTELLIGENCE & DIGITAL TWIN ENGINE PROMPT
+
+## Build a Google-Maps-Class Urban Climate Operating System Map Experience
+
+You are the world's most elite team of mapping engineers, GIS scientists, digital twin architects, geospatial AI engineers, Earth observation specialists, rendering engineers, urban intelligence researchers, climate scientists, infrastructure engineers, remote sensing experts, and product designers.
+
+Your mission is to build the TAPAS Map Intelligence Engine.
+
+The objective is not to build a GIS viewer.
+
+The objective is not to build a dashboard.
+
+The objective is not to build a heatmap.
+
+The objective is to build a city-scale digital twin operating system that delivers a world-class mapping experience with the usability, richness, responsiveness, detail, discoverability, and intelligence expected from top-tier mapping platforms while remaining powered by legally sourced and licensed geospatial datasets.
+
+The map must be the primary operating interface of TAPAS.
+
+Every analysis, recommendation, forecast, financial model, hotspot, roadmap, intervention, and decision must originate from and be accessible through the map.
+
+---
+
+# PRIMARY EXPERIENCE
+
+A user enters any city in India.
+
+Examples:
+
+Mumbai
+
+Delhi
+
+Bengaluru
+
+Hyderabad
+
+Ahmedabad
+
+Pune
+
+Chennai
+
+Kolkata
+
+Jaipur
+
+Lucknow
+
+Mysuru
+
+Bagalkot
+
+or any supported city.
+
+The system must automatically:
+
+Discover city boundaries.
+
+Discover administrative zones.
+
+Discover wards.
+
+Discover sectors.
+
+Discover neighborhoods.
+
+Discover localities.
+
+Acquire mapping layers.
+
+Acquire building footprints.
+
+Acquire roads.
+
+Acquire water bodies.
+
+Acquire vegetation.
+
+Acquire infrastructure.
+
+Generate city digital twin.
+
+Load map instantly.
+
+Render climate intelligence.
+
+Generate hotspot intelligence.
+
+Publish complete city intelligence package.
+
+---
+
+# MAP PHILOSOPHY
+
+The map is not a visualization.
+
+The map is not a feature.
+
+The map is not an add-on.
+
+The map is the product.
+
+The map is the operating system.
+
+The map is the primary intelligence environment.
+
+Users should feel like they are exploring a living city rather than a static map.
+
+---
+
+# MAP DETAIL REQUIREMENTS
+
+The map must display city-scale geographic detail.
+
+Support:
+
+Building footprints.
+
+Road networks.
+
+Street networks.
+
+Highways.
+
+Service roads.
+
+Transit routes.
+
+Rail infrastructure.
+
+Bus infrastructure.
+
+Commercial zones.
+
+Residential zones.
+
+Industrial zones.
+
+Administrative zones.
+
+Utilities.
+
+Parks.
+
+Urban forests.
+
+Green spaces.
+
+Water bodies.
+
+Rivers.
+
+Lakes.
+
+Drainage systems.
+
+Public infrastructure.
+
+Critical infrastructure.
+
+Logistics facilities.
+
+Warehouses.
+
+Commercial centers.
+
+Shopping complexes.
+
+Educational facilities.
+
+Healthcare facilities.
+
+Government facilities.
+
+Transit facilities.
+
+Every visible object must support interaction.
+
+Every visible object must expose metadata.
+
+Every visible object must support future intelligence overlays.
+
+---
+
+# LABELING SYSTEM
+
+Implement a dynamic labeling engine.
+
+Display labels based on zoom level.
+
+Support:
+
+Street names.
+
+Road names.
+
+Locality names.
+
+Neighborhood names.
+
+Ward names.
+
+Sector names.
+
+Zone names.
+
+Landmark names.
+
+Mall names.
+
+Hospital names.
+
+School names.
+
+University names.
+
+Government facility names.
+
+Industrial area names.
+
+Commercial district names.
+
+Transit station names.
+
+Building names when available.
+
+Labels must:
+
+Avoid overlap.
+
+Prevent clutter.
+
+Scale dynamically.
+
+Maintain readability.
+
+Prioritize importance.
+
+Adapt to zoom level.
+
+---
+
+# DIGITAL TWIN ENGINE
+
+Transform every city into a living digital twin.
+
+Every object must contain:
+
+Unique ID.
+
+Geometry.
+
+Attributes.
+
+Relationships.
+
+Metadata.
+
+Thermal State.
+
+Climate State.
+
+Risk State.
+
+Intervention State.
+
+Forecast State.
+
+Historical State.
+
+Economic State.
+
+Every object must be:
+
+Queryable.
+
+Filterable.
+
+Clickable.
+
+Searchable.
+
+Extensible.
+
+Forecastable.
+
+---
+
+# SATELLITE EXPERIENCE
+
+Support:
+
+Standard Map.
+
+Satellite Map.
+
+Hybrid Map.
+
+The hybrid mode must combine:
+
+High-resolution imagery.
+
+Road labels.
+
+Street labels.
+
+Building overlays.
+
+Administrative overlays.
+
+Climate overlays.
+
+Heat overlays.
+
+Hotspot overlays.
+
+The user must be able to visually identify:
+
+Buildings.
+
+Roads.
+
+Industrial sites.
+
+Commercial sites.
+
+Residential areas.
+
+Transit infrastructure.
+
+Lakes.
+
+Rivers.
+
+Parks.
+
+Infrastructure corridors.
+
+Urban development zones.
+
+The platform must support integration of licensed imagery providers and Earth observation datasets.
+
+---
+
+# SEARCH EXPERIENCE
+
+Support searching by:
+
+City.
+
+Locality.
+
+Neighborhood.
+
+Ward.
+
+Sector.
+
+Street.
+
+Road.
+...
+
+
+
+# TAPAS SURYA DRISHTI
+
+## GOOGLE-MAPS-CLASS MAP ENGINE PROMPT
+
+### Build a World-Class Interactive Digital Twin Mapping System
+
+You are the world's most elite team of mapping engineers, GIS architects, geospatial scientists, digital twin architects, rendering engineers, Earth observation experts, navigation platform engineers, and urban intelligence architects.
+
+Your mission is to build the TAPAS Map Engine.
+
+The objective is to create a map experience that feels as sophisticated, intuitive, responsive, information-rich, and detailed as the best modern mapping platforms while serving as the foundation of an Urban Climate Operating System.
+
+The user must be able to enter any city in India and immediately receive an immersive, highly detailed, fully interactive digital twin of that city.
+
+The map must become the primary operating environment of the platform.
+
+---
+
+# MAP-FIRST PHILOSOPHY
+
+The map is not a feature.
+
+The map is not a visualization.
+
+The map is not a dashboard component.
+
+The map is the product.
+
+Everything in TAPAS begins and ends on the map.
+
+Every hotspot.
+
+Every building.
+
+Every road.
+
+Every recommendation.
+
+Every financial model.
+
+Every roadmap.
+
+Every forecast.
+
+Every intelligence output.
+
+Must be accessible through the map.
+
+---
+
+# CITY DISCOVERY EXPERIENCE
+
+When a user enters:
+
+Mumbai
+
+Delhi
+
+Bengaluru
+
+Hyderabad
+
+Pune
+
+Ahmedabad
+
+Bagalkot
+
+or any Indian city
+
+the system must:
+
+Discover city boundaries.
+
+Load city geometry.
+
+Load administrative divisions.
+
+Load wards.
+
+Load sectors.
+
+Load localities.
+
+Load neighborhoods.
+
+Load landmarks.
+
+Generate digital twin.
+
+Render city instantly.
+
+No predefined city list.
+
+No hardcoded cities.
+
+Support all available Indian cities.
+
+---
+
+# MAP DETAIL REQUIREMENTS
+
+The map must display detailed city information.
+
+Show:
+
+Building footprints.
+
+Road networks.
+
+Street networks.
+
+Highways.
+
+Service roads.
+
+Transit routes.
+
+Rail infrastructure.
+
+Bus infrastructure.
+
+Water bodies.
+
+Lakes.
+
+Rivers.
+
+Parks.
+
+Urban forests.
+
+Green spaces.
+
+Industrial zones.
+
+Commercial zones.
+
+Residential zones.
+
+Administrative zones.
+
+Utilities.
+
+Critical infrastructure.
+
+Public facilities.
+
+Healthcare facilities.
+
+Educational institutions.
+
+Government buildings.
+
+Logistics infrastructure.
+
+Warehouses.
+
+Shopping centers.
+
+Transit hubs.
+
+Every visible object should support interaction.
+
+---
+
+# LABELING SYSTEM
+
+Display labels intelligently based on zoom level.
+
+Show:
+
+Street names.
+
+Road names.
+
+Building names when available.
+
+Mall names.
+
+Hospital names.
+
+School names.
+
+University names.
+
+Landmark names.
+
+Sector names.
+
+Ward names.
+
+Neighborhood names.
+
+Industrial area names.
+
+Commercial area names.
+
+Public facility names.
+
+The labeling engine must dynamically adapt to zoom level.
+
+Prevent clutter.
+
+Prioritize important labels.
+
+Maintain readability.
+
+---
+
+# DIGITAL TWIN EXPERIENCE
+
+Every city becomes a living digital twin.
+
+Every object must contain:
+
+Unique identifier.
+
+Geometry.
+
+Attributes.
+
+Relationships.
+
+Metadata.
+
+Thermal state.
+
+Risk state.
+
+Climate state.
+
+Intervention state.
+
+Forecast state.
+
+Historical state.
+
+Every object should be queryable.
+
+Every object should be clickable.
+
+Every object should support future intelligence overlays.
+
+---
+
+# SATELLITE EXPERIENCE
+
+Provide:
+
+Standard Map
+
+Satellite Map
+
+Hybrid Map
+
+The hybrid mode must combine:
+
+Imagery
+
+Road labels
+
+Building labels
+
+Street names
+
+Administrative names
+
+Climate intelligence layers
+
+Support high-resolution imagery integration.
+
+The user should be able to visually identify:
+
+Buildings.
+
+Roads.
+
+Parking areas.
+
+Industrial complexes.
+
+Commercial zones.
+
+Residential zones.
+
+Parks.
+
+Lakes.
+
+Rivers.
+
+Infrastructure corridors.
+
+Transit infrastructure.
+
+---
+
+# RENDERING ENGINE
+
+Use:
+
+Mapbox GL
+
+Deck.GL
+
+Vector Tiles
+
+Raster Tiles
+
+WebGL Rendering
+
+Support:
+
+Smooth zoom.
+
+Smooth pan.
+
+Smooth rotation.
+
+Dynamic layer loading.
+
+Tile streaming.
+
+Progressive rendering.
+
+High-performance rendering.
+
+City-scale rendering.
+
+Future support for 3D digital twins.
+
+---
+
+# BUILDING INTELLIGENCE
+
+Every building should support:
+
+Building footprint.
+
+Building category.
+
+Building metadata.
+
+Building area.
+
+Building risk information.
+
+Building climate intelligence.
+
+Building contribution to heat generation.
+
+Building intervention opportunities.
+
+When available:
+
+Building name.
+
+Building function.
+
+Commercial classification.
+
+Public classification.
+
+---
+
+# ROAD INTELLIGENCE
+
+Every road should support:
+
+Road geometry.
+
+Road name.
+
+Road classification.
+
+Road width.
+
+Road hierarchy.
+
+Traffic relevance.
+
+Heat contribution.
+
+Cooling opportunities.
+
+---
+
+...
+
+
+
+
+# TAPAS SURYA DRISHTI
+
+## ULTRA-PREMIUM MAP INTELLIGENCE SYSTEM PROMPT
+
+### Google-Maps-Level Digital Twin Experience for Climate Intelligence
+
+Design and implement the TAPAS Map Intelligence System as the primary operating interface of the platform.
+
+The map must not behave like a traditional GIS map, a simple heatmap, or a static satellite viewer.
+
+The objective is to create a city-scale climate intelligence digital twin that provides a user experience comparable to the best aspects of modern consumer mapping platforms while layering advanced climate intelligence on top.
+
+---
+
+## CORE PHILOSOPHY
+
+The map is the product.
+
+The map is the operating system.
+
+The map is the primary user interface.
+
+Every analysis, hotspot, recommendation, financial model, roadmap, forecast, and decision must originate from and be accessible through the map.
+
+Users should feel as though they are exploring a living digital twin of the city.
+
+---
+
+## CITY DISCOVERY EXPERIENCE
+
+When a user enters any Indian city:
+
+* Automatically discover city boundaries.
+* Load administrative boundaries.
+* Load wards.
+* Load sectors.
+* Load neighborhoods.
+* Load localities.
+* Load major landmarks.
+* Load road networks.
+* Load building footprints.
+* Load water bodies.
+* Load green areas.
+* Load infrastructure assets.
+
+The system must support:
+
+* Metropolitan cities.
+* Tier-1 cities.
+* Tier-2 cities.
+* Tier-3 cities.
+* Small municipalities.
+* Industrial towns.
+
+No predefined city list.
+
+Any supported city should load dynamically.
+
+---
+
+## DIGITAL TWIN MAP REQUIREMENTS
+
+The map must display:
+
+### Buildings
+
+Every visible building should support:
+
+* Building footprint.
+* Building geometry.
+* Building type.
+* Building name when available.
+* Commercial designation when available.
+* Public building designation when available.
+
+Examples:
+
+* Hospitals.
+* Schools.
+* Universities.
+* Government offices.
+* Shopping centers.
+* Industrial facilities.
+* Warehouses.
+* Hotels.
+* Transit stations.
+
+---
+
+### Roads
+
+Display:
+
+* National highways.
+* State highways.
+* Major roads.
+* Secondary roads.
+* Local roads.
+* Service roads.
+
+Show:
+
+* Road names.
+* Route labels.
+* Street names.
+* Junction names.
+
+---
+
+### Places
+
+Display and support interaction for:
+
+* Shops.
+* Restaurants.
+* Hotels.
+* Pharmacies.
+* Hospitals.
+* Schools.
+* Parks.
+* Malls.
+* Government offices.
+* Transit stations.
+* Industrial facilities.
+
+When available, display:
+
+* Name.
+* Category.
+* Location.
+* Associated metadata.
+
+---
+
+### Administrative Layers
+
+Display:
+
+* State.
+* District.
+* Taluk.
+* Ward.
+* Sector.
+* Zone.
+* Locality.
+* Neighborhood.
+
+---
+
+## SATELLITE EXPERIENCE
+
+The satellite view must be high-resolution and information-rich.
+
+Support:
+
+* True-color imagery.
+* Building footprint overlays.
+* Road overlays.
+* Vegetation overlays.
+* Water overlays.
+* Climate overlays.
+* Heat overlays.
+
+The user should be able to identify:
+
+* Buildings.
+* Roads.
+* Parks.
+* Lakes.
+* Rivers.
+* Industrial sites.
+* Large commercial facilities.
+* Transit corridors.
+
+The system should combine satellite imagery with vector intelligence layers.
+
+---
+
+## MULTI-LAYER VISUALIZATION
+
+Allow toggling of:
+
+### Base Layers
+
+* Standard map.
+* Satellite map.
+* Hybrid map.
+
+### Intelligence Layers
+
+* Heat layer.
+* Vegetation layer.
+* Impervious surface layer.
+* Urban growth layer.
+* Water stress layer.
+* Vulnerability layer.
+* Risk layer.
+* Recommendation layer.
+
+---
+
+## HOTSPOT VISUALIZATION
+
+Every hotspot must appear as an intelligent object.
+
+Each hotspot should display:
+
+* Rank.
+* Severity.
+* Risk.
+* Confidence.
+* Priority.
+* Category.
+
+Examples:
+
+* Industrial Heat Island.
+* Residential Heat Island.
+* Transit Heat Island.
+* Commercial Heat Island.
+* Mixed Heat Zone.
+
+---
+
+## HOTSPOT INTERACTION
+
+When a hotspot is clicked:
+
+Open a full intelligence panel containing:
+
+### Overview
+
+* Name.
+* Area.
+* Population affected.
+* Severity.
+* Priority.
+
+### DNA
+
+* Vegetation contribution.
+* Building contribution.
+* Road contribution.
+* Traffic contribution.
+* Industrial contribution.
+* Water contribution.
+
+### Evidence
+
+* Supporting observations.
+* Supporting datasets.
+* Confidence score.
+
+### Recommendations
+
+* Intervention portfolio.
+* Cooling impact.
+* Expected benefits.
+
+### Financials
+
+* CAPEX.
+* OPEX.
+* ROI.
+* Payback.
+
+### Roadmap
+
+* Immediate actions.
+* Short-term actions.
+* Medium-term actions.
+* Long-term actions.
+
+---
+
+## MAP PERFORMANCE REQUIREMENTS
+
+The system must support:
+
+* Smooth pan.
+* Smooth zoom.
+* Smooth rotation.
+* Dynamic layer loading.
+* Progressive rendering.
+* Vector tile streaming.
+* City-scale rendering.
+* Large dataset handling.
+
+Target:
+
+* Sub-second interaction.
+* High responsiveness.
+* Enterprise-grade performance...
