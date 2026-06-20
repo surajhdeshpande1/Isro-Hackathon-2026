@@ -1021,3 +1021,874 @@ Generate the complete product architecture, UX architecture, system architecture
 
 
 
+# TAPAS SURYA DRISHTI
+
+## TECHNICAL ARCHITECTURE MASTER PROMPT
+
+### Database Architecture + Data Model Architecture + GIS Architecture + AI Architecture + System Design
+
+You are the Chief Systems Architect, Chief Geospatial Architect, Chief Climate Intelligence Architect, Chief AI Architect, Chief Digital Twin Architect, Chief Database Architect, Chief Product Architect, Chief Infrastructure Architect, Chief GIS Engineer, Chief Remote Sensing Scientist, and Chief Platform Engineer responsible for designing the complete technical foundation of TAPAS SURYA DRISHTI.
+
+Your objective is not to build a prototype.
+
+Your objective is not to build a dashboard.
+
+Your objective is not to build a demo.
+
+Your objective is to design the complete technical architecture for the world's first Urban Climate Reasoning Intelligence System capable of scaling across every city in India.
+
+The architecture must be production-grade, cloud-native, enterprise-grade, modular, scalable, secure, explainable, maintainable, and extensible.
+
+The architecture must support millions of spatial objects, thousands of cities, continuous monitoring, large-scale geospatial analysis, AI-driven climate intelligence, digital twins, forecasting systems, optimization systems, financial intelligence, and evidence-based decision making.
+
+---
+
+# PRIMARY SYSTEM OBJECTIVE
+
+A user enters:
+
+Bagalkot
+
+Bengaluru
+
+Mumbai
+
+Delhi
+
+Pune
+
+Ahmedabad
+
+or any city in India.
+
+The system automatically:
+
+Discovers city boundaries.
+
+Builds a digital twin.
+
+Acquires satellite intelligence.
+
+Analyzes heat patterns.
+
+Identifies hotspots.
+
+Classifies hotspots.
+
+Builds hotspot DNA.
+
+Generates evidence.
+
+Validates conclusions.
+
+Researches comparable cases.
+
+Generates interventions.
+
+Optimizes interventions.
+
+Calculates financial outcomes.
+
+Creates implementation roadmaps.
+
+Forecasts future scenarios.
+
+Provides explainable intelligence.
+
+Every step must be backed by a production-grade architecture.
+
+---
+
+# ARCHITECTURE REQUIREMENTS
+
+Generate:
+
+System Architecture
+
+Application Architecture
+
+Frontend Architecture
+
+Backend Architecture
+
+Database Architecture
+
+GIS Architecture
+
+Digital Twin Architecture
+
+Satellite Intelligence Architecture
+
+Hotspot Architecture
+
+DNA Architecture
+
+Research Architecture
+
+Evidence Architecture
+
+Defense Architecture
+
+Recommendation Architecture
+
+Optimization Architecture
+
+Financial Architecture
+
+Roadmap Architecture
+
+Forecast Architecture
+
+Monitoring Architecture
+
+Copilot Architecture
+
+Cloud Architecture
+
+Security Architecture
+
+Data Architecture
+
+API Architecture
+
+Microservice Architecture
+
+Deployment Architecture
+
+Event Architecture
+
+Data Pipeline Architecture
+
+AI Architecture
+
+MLOps Architecture
+
+Observability Architecture
+
+Scalability Architecture
+
+---
+
+# DATABASE ARCHITECTURE REQUIREMENTS
+
+Design a complete PostgreSQL + PostGIS architecture.
+
+Generate all tables.
+
+Generate all relationships.
+
+Generate all entity models.
+
+Generate all GIS schemas.
+
+Generate all indexes.
+
+Generate all constraints.
+
+Generate all geospatial relationships.
+
+Generate all foreign keys.
+
+Generate all optimization strategies.
+
+Design:
+
+Users
+
+Organizations
+
+Cities
+
+Administrative Boundaries
+
+Buildings
+
+Roads
+
+Water Bodies
+
+Green Assets
+
+Infrastructure Assets
+
+Land Parcels
+
+Population Layers
+
+Environmental Layers
+
+Climate Layers
+
+Hotspots
+
+Hotspot DNA
+
+Research Dossiers
+
+Evidence Chains
+
+Validation Results
+
+Recommendations
+
+Optimization Results
+
+Financial Models
+
+Roadmaps
+
+Forecasts
+
+Monitoring Events
+
+Alerts
+
+Reports
+
+Knowledge Graph Entities
+
+Knowledge Graph Relationships
+
+Digital Twin Objects
+
+Every entity must contain detailed schemas.
+
+Every entity must include future scalability considerations.
+
+---
+
+# GIS ARCHITECTURE REQUIREMENTS
+
+Design a complete GIS architecture.
+
+Support:
+
+City Boundaries
+
+Administrative Zones
+
+Buildings
+
+Road Networks
+
+Transit Networks
+
+Utility Networks
+
+Water Networks
+
+Vegetation Networks
+
+Environmental Layers
+
+Climate Layers
+
+Heat Layers
+
+Forecast Layers
+
+Intervention Layers
+
+Risk Layers
+
+Digital Twin Layers
+
+Support:
+
+2D Mapping
+
+3D Mapping
+
+Spatial Indexing
+
+Spatial Queries
+
+Vector Tiles
+
+Raster Tiles
+
+Satellite Layers
+
+Terrain Layers
+
+Building Extrusions
+
+Spatial Analytics
+
+Heat Analysis
+
+Network Analysis
+
+Buffer Analysis
+
+Overlay Analysis
+
+Temporal Analysis
+
+Geospatial Machine Learning
+
+Design how all GIS data flows through the system.
+
+---
+
+# DIGITAL TWIN ARCHITECTURE
+
+Design the city digital twin architecture.
+
+Every object must become an intelligent entity.
+
+Buildings:
+
+Footprint
+
+Height
+
+Floors
+
+Usage
+
+Occupancy
+
+Thermal Profile
+
+Cooling Potential
+
+Economic Significance
+
+Roads:
+
+Traffic
+
+Congestion
+
+Heat Contribution
+
+Cooling Potential
+
+Water Bodies:
+
+Health
+
+Cooling Influence
+
+Restoration Potential
+
+Green Assets:
+
+Vegetation Density
+
+Cooling Contribution
+
+Resilience Contribution
+
+Infrastructure Assets:
+
+Criticality
+
+Exposure
+
+Risk
+
+Adaptation Potential
+
+Design object relationships.
+
+Design synchronization strategies.
+
+Design update strategies.
+
+Design lifecycle management.
+
+---
+
+# HOTSPOT ENGINE ARCHITECTURE
+
+Design the hotspot engine.
+
+Input:
+
+Satellite Data
+
+Climate Data
+
+GIS Data
+
+Urban Data
+
+Population Data
+
+Infrastructure Data
+
+Environmental Data
+
+Process:
+
+Feature Extraction
+
+Spatial Analysis
+
+Pattern Recognition
+
+Clustering
+
+Heat Detection
+
+Classification
+
+Ranking
+
+Output:
+
+Hotspots
+
+Severity Scores
+
+Confidence Scores
+
+Evidence Scores
+
+Risk Scores
+
+Vulnerability Scores
+
+Resilience Scores
+
+Design all algorithms.
+
+Design all data flows.
+
+Design all storage mechanisms.
+
+---
+
+# SURYA DNA ARCHITECTURE
+
+Design the hotspot DNA system.
+
+Every hotspot must contain:
+
+Root Causes
+
+Contribution Percentages
+
+Evidence Levels
+
+Confidence Levels
+
+Historical Drivers
+
+Future Drivers
+
+Generate complete data models.
+
+Generate DNA calculation methodologies.
+
+Generate explainability workflows.
+
+---
+
+# SURYA RESEARCH ENGINE ARCHITECTURE
+
+Design the research engine.
+
+The engine must:
+
+Research hotspot history.
+
+Research urban evolution.
+
+Research environmental changes.
+
+Research infrastructure evolution.
+
+Research climate evolution.
+
+Research comparable global cities.
+
+Research successful interventions.
+
+Research failed interventions.
+
+Generate structured research dossiers.
+
+Design:
+
+Research Pipelines
+
+Research Storage
+
+Knowledge Base Architecture
+
+Case Study Architecture
+
+Research Ranking Systems
+
+Research Evidence Systems
+
+---
+
+# SURYA EVIDENCE ARCHITECTURE
+
+Design a complete evidence framework.
+
+Every conclusion must contain:
+
+Supporting Evidence
+
+Conflicting Evidence
+
+Confidence Levels
+
+Assumptions
+
+Validation Results
+
+Data Sources
+
+Research Sources
+
+Model Outputs
+
+Evidence Strength
+
+Generate:
+
+Evidence Database
+
+Evidence Chains
+
+Evidence Graphs
+
+Evidence APIs
+
+Evidence Visualizations
+
+---
+
+# SURYA DEFENSE ARCHITECTURE
+
+Design a self-validation system.
+
+The system must challenge itself.
+
+Generate:
+
+Alternative Explanations
+
+Competing Hypotheses
+
+Sensitivity Analyses
+
+Stress Tests
+
+Uncertainty Models
+
+Validation Workflows
+
+Approval Frameworks
+
+Recommendation Scoring
+
+Decision Confidence Systems
+
+---
+
+# RECOMMENDATION ARCHITECTURE
+
+Design the AI Climate Consultant.
+
+Generate:
+
+Intervention Libraries
+
+Engineering Strategies
+
+Policy Strategies
+
+Urban Planning Strategies
+
+Climate Adaptation Strategies
+
+Generate recommendation pipelines.
+
+Generate recommendation ranking systems.
+
+Generate recommendation confidence systems.
+
+Generate recommendation explainability systems.
+
+---
+
+# OPTIMIZATION ARCHITECTURE
+
+Design an optimization engine.
+
+Optimize:
+
+Cooling
+
+Cost
+
+ROI
+
+Resilience
+
+Risk
+
+Implementation Time
+
+Social Impact
+
+Environmental Impact
+
+Generate optimization models.
+
+Generate optimization workflows.
+
+Generate portfolio generation strategies.
+
+---
+
+# FINANCIAL ARCHITECTURE
+
+Design the financial intelligence engine.
+
+Calculate:
+
+CAPEX
+
+OPEX
+
+Maintenance Cost
+
+Healthcare Savings
+
+Energy Savings
+
+Productivity Gains
+
+Carbon Savings
+
+Property Value Gains
+
+Avoided Losses
+
+NPV
+
+IRR
+
+Payback
+
+Cost Benefit Ratio
+
+Design:
+
+Financial Models
+
+Financial Pipelines
+
+Financial Databases
+
+Financial APIs
+
+Financial Explainability
+
+---
+
+# ROADMAP ARCHITECTURE
+
+Design the roadmap engine.
+
+Generate:
+
+Immediate Actions
+
+Quick Wins
+
+Short-Term Actions
+
+Medium-Term Actions
+
+Long-Term Actions
+
+Transformational Actions
+
+Design roadmap generation pipelines.
+
+Design roadmap prioritization systems.
+
+Design roadmap scoring systems.
+
+---
+
+# FORECAST ARCHITECTURE
+
+Design forecasting systems for:
+
+2030
+
+2035
+
+2040
+
+2045
+
+2050
+
+Model:
+
+Temperature
+
+Population Exposure
+
+Economic Impact
+
+Water Stress
+
+Infrastructure Stress
+
+Climate Risk
+
+Intervention Effectiveness
+
+Generate:
+
+Forecast Pipelines
+
+Forecast Databases
+
+Forecast Models
+
+Forecast APIs
+
+Forecast Explainability
+
+---
+
+# AI ARCHITECTURE
+
+Design a multi-model intelligence system.
+
+Models:
+
+Heat Detection Model
+
+Classification Model
+
+DNA Model
+
+Research Model
+
+Evidence Model
+
+Validation Model
+
+Recommendation Model
+
+Optimization Model
+
+Forecast Model
+
+Copilot Model
+
+Design:
+
+Training Pipelines
+
+Inference Pipelines
+
+Model Registry
+
+Versioning
+
+Evaluation
+
+Monitoring
+
+Retraining
+
+MLOps
+
+---
+
+# API ARCHITECTURE
+
+Generate complete API specifications.
+
+Design:
+
+City APIs
+
+Digital Twin APIs
+
+Hotspot APIs
+
+DNA APIs
+
+Research APIs
+
+Evidence APIs
+
+Recommendation APIs
+
+Optimization APIs
+
+Financial APIs
+
+Roadmap APIs
+
+Forecast APIs
+
+Monitoring APIs
+
+Copilot APIs
+
+---
+
+# CLOUD ARCHITECTURE
+
+Design for:
+
+AWS
+
+Azure
+
+GCP
+
+Generate:
+
+Networking
+
+Storage
+
+Compute
+
+Containerization
+
+Kubernetes
+
+Caching
+
+Queues
+
+Monitoring
+
+Logging
+
+Disaster Recovery
+
+Scalability
+
+Security
+
+Cost Optimization
+
+---
+
+# FINAL OUTPUT
+
+Produce a complete technical blueprint capable of being handed directly to a world-class engineering team and used to build TAPAS SURYA DRISHTI.
+
+The output should include architecture diagrams, system designs, entity relationship models, GIS schemas, API contracts, data flows, service interactions, AI workflows, cloud deployment strategies, scaling strategies, security models, and implementation priorities.
+
+The final architecture must position TAPAS SURYA DRISHTI not as a heatmap application but as a full Urban Climate Operating System and Climate Reasoning Intelligence Platform.
