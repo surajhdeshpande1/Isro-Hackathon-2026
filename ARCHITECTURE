@@ -1,0 +1,1023 @@
+# MASTER BUILD PROMPT
+
+## TAPAS SURYA DRISHTI
+
+### Urban Climate Reasoning Intelligence System
+
+### Founder Edition — System Architecture Prompt
+
+You are a world-class team consisting of climate scientists, urban planners, geospatial intelligence engineers, GIS specialists, remote sensing experts, NASA Earth Observation scientists, ISRO satellite specialists, digital twin architects, infrastructure economists, systems thinkers, AI researchers, machine learning engineers, software architects, product strategists, startup founders, and full-stack engineers.
+
+Your task is to design and build TAPAS SURYA DRISHTI.
+
+TAPAS SURYA DRISHTI is not a dashboard.
+
+It is not a heatmap.
+
+It is not a GIS viewer.
+
+It is not a smart-city portal.
+
+It is not a climate visualization application.
+
+It is not a reporting system.
+
+It is the world's first Urban Climate Reasoning Intelligence System.
+
+The system must function as a living climate intelligence platform capable of observing, understanding, researching, reasoning, validating, forecasting, optimizing, defending, and continuously improving its understanding of cities.
+
+The final platform should feel like a fusion of:
+
+Google Maps
+
+Google Earth
+
+Palantir Foundry
+
+ArcGIS
+
+Bloomberg Terminal
+
+NASA Mission Control
+
+ISRO Mission Control
+
+Tesla Fleet Intelligence
+
+Digital Twin Platforms
+
+Scientific Research Systems
+
+Urban Planning Software
+
+Climate Intelligence Platforms
+
+while maintaining a premium, futuristic, and enterprise-grade experience.
+
+---
+
+# PRODUCT GOAL
+
+The goal is to transform any city entered by a user into a living climate-aware digital twin capable of:
+
+Understanding heat formation.
+
+Identifying heat hotspots.
+
+Classifying hotspot types.
+
+Explaining root causes.
+
+Researching historical evolution.
+
+Finding evidence.
+
+Validating conclusions.
+
+Generating optimal interventions.
+
+Calculating financial outcomes.
+
+Creating implementation roadmaps.
+
+Forecasting future scenarios.
+
+Defending recommendations.
+
+Monitoring future changes.
+
+Every recommendation must be explainable.
+
+Every recommendation must be evidence-backed.
+
+Every recommendation must be financially justified.
+
+Every recommendation must be scientifically defensible.
+
+---
+
+# NON-NEGOTIABLE PRODUCT RULES
+
+Never display a hotspot without explaining why it exists.
+
+Never generate a recommendation without evidence.
+
+Never display a financial estimate without assumptions.
+
+Never display a forecast without uncertainty ranges.
+
+Never produce a recommendation without comparing alternatives.
+
+Never hide confidence scores.
+
+Never hide assumptions.
+
+Never hide evidence.
+
+Every recommendation must survive scientific scrutiny.
+
+Every recommendation must survive government scrutiny.
+
+Every recommendation must survive investor scrutiny.
+
+---
+
+# USER EXPERIENCE
+
+User enters:
+
+Any city in India.
+
+Examples:
+
+Bagalkot
+
+Bengaluru
+
+Mumbai
+
+Delhi
+
+Pune
+
+Mysuru
+
+Any municipality.
+
+Any smart city.
+
+Any urban settlement.
+
+The platform must automatically:
+
+Discover the city.
+
+Acquire boundaries.
+
+Acquire satellite data.
+
+Build a digital twin.
+
+Analyze the city.
+
+Discover hotspots.
+
+Classify hotspots.
+
+Generate hotspot DNA.
+
+Generate evidence.
+
+Perform research.
+
+Generate recommendations.
+
+Optimize recommendations.
+
+Generate financial intelligence.
+
+Generate implementation roadmaps.
+
+Generate future forecasts.
+
+Present results visually.
+
+---
+
+# DIGITAL TWIN REQUIREMENTS
+
+The map must never look empty.
+
+The city must appear alive.
+
+Render:
+
+Buildings
+
+Roads
+
+Shops
+
+Commercial Areas
+
+Residential Areas
+
+Industrial Areas
+
+Warehouses
+
+Hospitals
+
+Schools
+
+Universities
+
+Government Offices
+
+Bus Stations
+
+Railway Stations
+
+Metro Stations
+
+Airports
+
+Lakes
+
+Rivers
+
+Canals
+
+Parks
+
+Forests
+
+Utilities
+
+Critical Infrastructure
+
+Every visible object must be clickable.
+
+Every visible object must contribute to the intelligence model.
+
+Every visible object must contain metadata.
+
+Every visible object must become part of the city digital twin.
+
+---
+
+# SURYA CORE
+
+SURYA CORE is the brain.
+
+SURYA CORE must contain:
+
+Observation Engine
+
+Perception Engine
+
+Understanding Engine
+
+Urban Memory Engine
+
+Hotspot Engine
+
+DNA Engine
+
+Research Engine
+
+Evidence Engine
+
+Defense Engine
+
+Consultant Engine
+
+Optimization Engine
+
+Financial Engine
+
+Roadmap Engine
+
+Forecast Engine
+
+Watch Engine
+
+Copilot Engine
+
+---
+
+# OBSERVATION ENGINE
+
+Collect facts.
+
+Never draw conclusions.
+
+Collect:
+
+Land Surface Temperature
+
+NDVI
+
+NDBI
+
+Albedo
+
+Vegetation Health
+
+Building Density
+
+Road Density
+
+Traffic Density
+
+Industrial Activity
+
+Population Density
+
+Humidity
+
+Wind Patterns
+
+Water Availability
+
+Urban Morphology
+
+Infrastructure Density
+
+Environmental Stress Indicators
+
+Sources:
+
+Google Maps
+
+Google Places
+
+Google Geocoding
+
+OpenStreetMap
+
+Sentinel
+
+Landsat
+
+MODIS
+
+ERA5
+
+ISRO Datasets
+
+NASA Datasets
+
+Municipal GIS Datasets
+
+Climate Archives
+
+---
+
+# HOTSPOT ENGINE
+
+Automatically discover hotspots.
+
+Never use hardcoded hotspots.
+
+Never use predefined hotspots.
+
+Analyze:
+
+Thermal Patterns
+
+Urban Patterns
+
+Vegetation Patterns
+
+Infrastructure Patterns
+
+Population Patterns
+
+Generate:
+
+Heat Severity
+
+Heat Extent
+
+Heat Clusters
+
+Heat Polygons
+
+Heat Risk Scores
+
+Hotspots must be spatial entities.
+
+Not red blobs.
+
+---
+
+# HOTSPOT CLASSIFICATION ENGINE
+
+Classify hotspots into:
+
+Industrial Heat Island
+
+Residential Heat Island
+
+Commercial Heat Island
+
+Transit Heat Island
+
+Construction Heat Island
+
+Infrastructure Heat Island
+
+Water Body Degradation Heat Island
+
+Urban Expansion Heat Island
+
+Logistics Heat Island
+
+Mixed Heat Island
+
+Emerging Heat Risk Zone
+
+Or dynamically discovered categories.
+
+---
+
+# SURYA DNA ENGINE
+
+Every hotspot must receive a DNA profile.
+
+Example:
+
+Vegetation Loss:
+32%
+
+Industrial Activity:
+21%
+
+Road Density:
+18%
+
+Traffic:
+14%
+
+Water Degradation:
+9%
+
+Urban Expansion:
+6%
+
+The DNA engine must explain exactly why a hotspot exists.
+
+Every percentage must be evidence-backed.
+
+Every percentage must contain confidence values.
+
+---
+
+# SURYA RESEARCH ENGINE
+
+This is a core moat.
+
+When a hotspot is discovered:
+
+Automatically generate a research dossier.
+
+Research:
+
+Historical evolution.
+
+Land use changes.
+
+Vegetation changes.
+
+Water body changes.
+
+Urban growth.
+
+Infrastructure growth.
+
+Population growth.
+
+Thermal evolution.
+
+Climate changes.
+
+Then find global analogs.
+
+Examples:
+
+Ahmedabad
+
+Phoenix
+
+Dubai
+
+Singapore
+
+Riyadh
+
+Melbourne
+
+Los Angeles
+
+Determine:
+
+What worked.
+
+What failed.
+
+What can be adapted.
+
+What should be avoided.
+
+Generate a scientific intervention knowledge base.
+
+---
+
+# SURYA EVIDENCE ENGINE
+
+Every hotspot must contain:
+
+Evidence Sources
+
+Satellite Sources
+
+Historical Records
+
+Environmental Records
+
+Urban Records
+
+Infrastructure Records
+
+Research Sources
+
+Model Outputs
+
+Confidence Scores
+
+Evidence Scores
+
+Validation Scores
+
+Assumptions
+
+Uncertainty Ranges
+
+Every recommendation must be traceable.
+
+Every output must be auditable.
+
+---
+
+# SURYA DEFENSE ENGINE
+
+Challenge every conclusion.
+
+Generate:
+
+Alternative Explanations
+
+Competing Hypotheses
+
+Sensitivity Analyses
+
+Stress Tests
+
+Uncertainty Analyses
+
+Question:
+
+Could this recommendation be wrong?
+
+Could another intervention perform better?
+
+Could uncertainty change the outcome?
+
+Only publish recommendations that survive validation.
+
+---
+
+# SURYA IMPACT ENGINE
+
+Measure:
+
+Population Exposure
+
+Healthcare Exposure
+
+School Exposure
+
+Business Exposure
+
+Infrastructure Exposure
+
+Energy Burden
+
+Healthcare Burden
+
+Water Stress
+
+Economic Loss
+
+Productivity Loss
+
+Climate Vulnerability
+
+---
+
+# HOTSPOT INTELLIGENCE PANEL
+
+When a hotspot is clicked display:
+
+Category
+
+Severity
+
+Confidence
+
+Evidence Strength
+
+Resilience Score
+
+Vulnerability Score
+
+Financial Impact Score
+
+Population Exposed
+
+Businesses Exposed
+
+Hospitals Exposed
+
+Schools Exposed
+
+Infrastructure Exposed
+
+Historical Evolution
+
+Future Evolution
+
+DNA Analysis
+
+Research Findings
+
+Evidence Chain
+
+Alternative Explanations
+
+Forecasts
+
+Recommendations
+
+Financials
+
+Roadmaps
+
+---
+
+# AI CLIMATE CONSULTANT
+
+Generate multiple intervention pathways.
+
+Never generate a single recommendation.
+
+Generate competing recommendations.
+
+Examples:
+
+Cool Roofs
+
+Urban Forestry
+
+Green Corridors
+
+Reflective Pavements
+
+Lake Restoration
+
+River Restoration
+
+District Cooling
+
+Passive Cooling Architecture
+
+Waste Heat Recovery
+
+Radiative Cooling
+
+Thermal Storage
+
+Transit Cooling
+
+Industrial Retrofits
+
+Infrastructure Upgrades
+
+Policy Interventions
+
+Each recommendation must include:
+
+Scientific Reasoning
+
+Engineering Reasoning
+
+Implementation Strategy
+
+Stakeholders
+
+Dependencies
+
+Risks
+
+Expected Cooling
+
+Expected Resilience Improvement
+
+Expected Social Benefits
+
+Expected Environmental Benefits
+
+Expected Economic Benefits
+
+---
+
+# SCENARIO LABORATORY
+
+Generate:
+
+Business As Usual
+
+Minimal Intervention
+
+Moderate Intervention
+
+Aggressive Cooling
+
+Maximum Resilience
+
+Net Zero Heat
+
+Custom Scenario
+
+Simulate:
+
+2030
+
+2035
+
+2040
+
+2045
+
+2050
+
+Visualize all outcomes.
+
+---
+
+# COUNTERFACTUAL ENGINE
+
+Evaluate:
+
+What if vegetation increased?
+
+What if lakes restored?
+
+What if traffic reduced?
+
+What if industrial emissions reduced?
+
+What if cool roofs deployed?
+
+What if green corridors created?
+
+Determine which variables matter most.
+
+---
+
+# OPTIMIZATION ENGINE
+
+Search intervention combinations.
+
+Optimize for:
+
+Maximum Cooling
+
+Highest ROI
+
+Minimum Cost
+
+Minimum Risk
+
+Maximum Resilience
+
+Maximum Social Benefit
+
+Fastest Deployment
+
+Balanced Portfolio
+
+Output:
+
+Optimal Intervention Portfolio
+
+Explain why it wins.
+
+---
+
+# FINANCIAL ENGINE
+
+Calculate:
+
+CAPEX
+
+OPEX
+
+Maintenance Cost
+
+Healthcare Savings
+
+Energy Savings
+
+Productivity Gains
+
+Carbon Savings
+
+Property Value Gains
+
+Avoided Infrastructure Losses
+
+NPV
+
+IRR
+
+Cost Benefit Ratio
+
+Payback Period
+
+Total Economic Return
+
+All calculations must expose assumptions.
+
+---
+
+# ROADMAP ENGINE
+
+Generate:
+
+Immediate Actions
+
+Quick Wins
+
+Short-Term Actions
+
+Medium-Term Actions
+
+Long-Term Actions
+
+Transformational Actions
+
+Each phase must include:
+
+Timeline
+
+Budget
+
+Stakeholders
+
+Dependencies
+
+Risks
+
+Expected Outcomes
+
+Success Metrics
+
+---
+
+# FORECAST ENGINE
+
+Forecast:
+
+Temperature
+
+Population Exposure
+
+Economic Loss
+
+Energy Demand
+
+Infrastructure Stress
+
+Climate Vulnerability
+
+Water Availability
+
+Vegetation Coverage
+
+Years:
+
+2030
+
+2035
+
+2040
+
+2045
+
+2050
+
+Display confidence intervals.
+
+---
+
+# SURYA WATCH
+
+Continuously monitor:
+
+New Hotspots
+
+Vegetation Loss
+
+Urban Growth
+
+Water Degradation
+
+Construction Activity
+
+Infrastructure Changes
+
+Climate Anomalies
+
+Generate:
+
+Alerts
+
+Trend Reports
+
+Risk Reports
+
+Resilience Reports
+
+---
+
+# SURYA VISION
+
+Hover anywhere on the map.
+
+Display:
+
+Temperature
+
+Heat Risk
+
+Cooling Potential
+
+Vegetation Health
+
+Population Density
+
+Building Density
+
+Vulnerability
+
+Resilience
+
+Investment Potential
+
+Forecast Risk
+
+Adaptation Opportunities
+
+---
+
+# CLIMATE COPILOT
+
+Allow natural language queries.
+
+Examples:
+
+Why is this hotspot growing?
+
+What intervention provides the highest ROI?
+
+What is the cheapest way to reduce temperature by two degrees?
+
+Where should the city invest ₹100 crore?
+
+Why was this recommendation selected?
+
+What is the confidence in this forecast?
+
+The copilot must answer using:
+
+Evidence
+
+Research
+
+Financials
+
+Optimization
+
+Forecasting
+
+Simulation
+
+Reasoning
+
+---
+
+# FINAL OBJECTIVE
+
+Build TAPAS SURYA DRISHTI as the operating system through which governments, municipalities, planners, researchers, consultants, infrastructure firms, investors, and decision-makers understand, simulate, finance, prioritize, defend, and solve urban heat challenges.
+
+The system must behave like an intelligent climate scientist continuously studying the city rather than a traditional software application.
+
+Generate the complete product architecture, UX architecture, system architecture, database architecture, GIS architecture, AI architecture, APIs, workflows, data pipelines, screen designs, user journeys, deployment architecture, and production-ready implementation plan required to build this platform.
+
+
+
+
+
+
