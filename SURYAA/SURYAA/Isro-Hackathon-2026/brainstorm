@@ -1,0 +1,141 @@
+Alright Suraj, full god mode engaged. Let me build you a strategy that's genuinely differentiated — not just "we used AI" like every other team, but something with architectural depth that makes judges lean forward.
+
+---
+
+## The project: TAPAS-UHI
+
+**T**hermal **A**nalysis **P**latform for **AI**-driven **S**cenarios — Urban Heat Intelligence
+
+Beautiful coincidence: *tapas* (तपस्) literally means heat in Sanskrit. ISRO judges will notice that. Tagline: *"From orbit to street — physics-grounded AI for urban cooling."*
+
+---
+
+## What every other team will build vs. what you build
+
+Every other team will: run XGBoost or a CNN on Landsat LST data → produce a heat map → say "plant trees here." Judges have seen this 40 times.
+
+**TAPAS-UHI does five things no one else will:**
+
+**1. Physics-Informed Neural Networks (PINNs).** The problem statement explicitly says *physics-informed decision-making*. Most teams will ignore this and just do black-box ML. You embed the urban energy balance equation directly into your neural network's loss function. The model *cannot* make predictions that violate thermodynamics. This is publishable-quality work — judges from ISRO/IIRS will recognize it immediately.
+
+**2. Graph Neural Networks on urban morphology.** You model the city as a graph — buildings as nodes, streets as edges, canyon geometry as edge features. Heat flow through urban fabric is fundamentally a graph problem. No other team will think of this.
+
+**3. ISRO-native data pipeline.** Every other team will pull Landsat from USGS. You build around Resourcesat-2, INSAT-3D thermal, and Cartosat-2 — ISRO's own satellites. You access this via Bhuvan. Judges are ISRO scientists. This is a massive signal that you understand the ecosystem.
+
+**4. Multi-objective Pareto optimization (NSGA-II).** Other teams give generic recommendations. You generate Pareto-optimal intervention portfolios — the trade-off frontier between cooling effect, cost, implementation speed, and equity impact. A city planner with ₹50 crore and a city planner with ₹500 crore both get their optimal plan.
+
+**5. Demo on Bengaluru.** ISRO headquarters is in Bengaluru. You demonstrate on the judges' backyard. They will have ground truth intuition about what you're showing them.
+
+---
+
+## System architecture*(Click any node to deep-dive into that component.)*
+
+---
+
+## Data pipeline — ISRO first
+
+The single biggest signal to judges is which satellites you cite. Build your pipeline in this priority order:
+
+**Resourcesat-2/2A** (LISS-IV at 5.8m) for high-resolution urban land use classification — buildings, bare soil, vegetation, water bodies, roads. This is your primary spatial layer.
+
+**INSAT-3D/3DR** for thermal infrared. You pull the 4km thermal channel to get LST at diurnal intervals (day + night passes). This is your primary heat signal. ISRO data, ISRO judges, ISRO hackathon.
+
+**Cartosat-2 series** (0.65m panchromatic) for building footprint extraction. Feed this into a U-Net to extract building outlines automatically — you'll need these for the GNN.
+
+**BHUVAN geoportal** (bhuvan.nrsc.gov.in) is ISRO's own GIS platform. Pull thematic layers from here: urban sprawl, land use, drainage. Reference it explicitly in your presentation.
+
+**Supplementary:** Landsat-9 Band 10/11 (thermal) for multi-temporal time series going back years. Sentinel-2 (10m multispectral) for fine-grained NDVI and NDWI. ERA5 reanalysis for wind speed, humidity, air temperature — these are your meteorological covariates.
+
+**Ground truth:** IMD's automatic weather station data for validation. OpenStreetMap for street network topology (your GNN edge set). Census ward-level population data for the vulnerability index.
+
+---
+
+## AI/ML stack — the three models
+
+**PINNs — the crown jewel.** Most teams will train a neural network purely on data. You train it with an additional physics loss term that penalizes violations of the urban energy balance equation:
+
+Q\* + Q_F = Q_H + Q_E + ΔQ_S
+
+Where Q\* is net radiation, Q_F is anthropogenic heat flux, Q_H is sensible heat, Q_E is latent heat, and ΔQ_S is storage. Your PINN's loss function is:
+
+L_total = L_data + λ · L_physics
+
+L_physics penalizes the residual of this equation at every grid point. The result: a model that extrapolates correctly into unseen scenarios (e.g., what happens to temperature if you add 30% green cover here) because it's constrained by physics, not just correlation. This is exactly what "physics-informed decision-making" in the problem statement is asking for.
+
+**GNN — urban morphology as a graph.** Convert OSM data into a graph: each street block is a node, each shared edge (road/alley) is an edge. Node features: building height, sky-view factor, impervious surface fraction, albedo. Edge features: street width, orientation (affects solar exposure and wind channeling). A 3-layer GraphSAGE or GATv2 learns how heat propagates through urban fabric spatially. This captures phenomena that CNNs miss — a narrow alleyway channeling hot air, a building canyon trapping radiation.
+
+**LSTM + Spatial Attention — temporal dynamics.** UHI intensity isn't static: it peaks at specific times (post-sunset in summer), varies by monsoon stage, follows weekly anthropogenic cycles. Stack an LSTM over your spatial feature maps for each time step, add a spatial attention mechanism that learns *where* in the city heat concentrates at different hours. This produces 24-hour UHI forecasts, not just snapshots.
+
+**Ensemble output.** The three model outputs feed into a final ensemble (gradient boosted trees or a small MLP): PINN gives physically-consistent LST predictions, GNN gives morphology-driven spatial risk scores, LSTM gives temporal anomaly signals. The ensemble produces a composite Urban Heat Stress Index (UHSI) at 10m × 10m resolution.
+
+---
+
+## Physics engine — not just equations on a slide
+
+"Physics-informed" in your codebase means three concrete modules:
+
+**Bowen ratio solver.** At every pixel, compute β = Q_H / Q_E (ratio of sensible to latent heat flux). High β = hot and dry (concrete, tarmac). Low β = cool and moist (parks, water bodies). You derive this from Landsat thermal + NDVI using SEBS (Surface Energy Balance System) — there's a Python implementation. This tells you the mechanistic *reason* each zone is hot, not just that it is.
+
+**Street canyon radiative model.** Urban canyons trap radiation by multiple reflections between building walls. Canyon heat trapping scales with H/W (height-to-width ratio), which you extract from Cartosat building heights and OSM street widths. Higher H/W = more trapped radiation = hotter street-level temperature. You compute a Canyon Heat Amplification Factor for every street segment.
+
+**CFD surrogate model.** Full Computational Fluid Dynamics is too slow for a hackathon demo. Instead, train a lightweight surrogate: a small neural network that takes building layout + wind direction as input and outputs estimated wind speed reduction factor and heat dispersion coefficient. Pre-train this on OpenFOAM simulations from a reference urban patch (you can find pre-computed datasets). This lets you say "we model airflow effects" without running CFD in real time.
+
+---
+
+## Optimization engine — Pareto-optimal interventions
+
+This is your second-biggest differentiator. Six intervention types to model:
+
+Cool roofs (high-albedo coating), street trees, pocket parks, permeable pavements, urban water bodies (rejuvenated lakes — very relevant for Bengaluru), and building orientation correction for new constructions.
+
+For each intervention in each zone, estimate three quantities: temperature reduction (ΔT in °C derived from literature + your PINN simulation), implementation cost (₹/hectare, use CPWD schedules), and equity score (weight by population vulnerability — low-income wards get higher priority).
+
+NSGA-II minimizes three objectives simultaneously: minimize residual heat stress, minimize total cost, maximize equity coverage. The algorithm runs for ~200 generations and outputs the Pareto frontier — a curve of non-dominated solutions. You pick three representative points on the curve ("Maximum cooling," "Budget-optimized," "Equity-first") and present them as three policy scenarios.
+
+This is the output that makes city planners lean forward. They don't want a heat map. They want to know: if I have ₹100 crore, what do I do and where?
+
+---
+
+## Output dashboard — what the demo looks like
+
+Build a Deck.gl + Mapbox-based geospatial dashboard (or Kepler.gl if speed matters):
+
+Layer 1: Heat stress choropleth of Bengaluru at ward level. Red = critical, yellow = moderate, green = safe.
+
+Layer 2: Toggle to "Drivers view" — shows the dominant UHI driver per zone (NDVI deficit, high NDBI, low sky-view factor, high anthropogenic heat). This answers "why is it hot here."
+
+Layer 3: Click a ward → intervention planner panel opens. Shows three Pareto scenarios with predicted ΔT, cost estimate, and implementation timeline.
+
+Layer 4: "What-if simulator" — user draws a polygon, selects an intervention type (e.g., add green roof), slider for coverage percentage → PINN re-runs on modified albedo/vegetation inputs → updated temperature prediction animates on map.
+
+Layer 5: Vulnerability overlay — shows population-weighted heat risk (elderly, outdoor workers, slum dwellers), which zones are high-risk for heat mortality.
+
+---
+
+## Build roadmap for hackathon
+
+Phase 1 — **Data & baseline** (first sprint): Set up GeoPandas + Rasterio pipeline. Pull Bengaluru from Landsat-9 and Sentinel-2 (free via USGS EarthExplorer and Copernicus). Compute LST, NDVI, NDBI, albedo. Produce your first heat map. This is table stakes — get it done fast.
+
+Phase 2 — **Graph construction**: Build the OSM street graph for Bengaluru. Assign thermal features to nodes. Run a basic GraphSAGE to produce spatial risk scores. This plus your LST map is already more sophisticated than 80% of submissions.
+
+Phase 3 — **PINNs**: This is the hardest part technically. Start from the `deepxde` Python library (made for PINNs — it handles the physics residual loss automatically). Define the energy balance PDE, train on your feature set. Even a simple demonstration that the physics constraint reduces extrapolation error compared to vanilla MLP wins the argument.
+
+Phase 4 — **Optimization**: Implement NSGA-II using the `pymoo` library (3 lines to set up). Define the three objectives. Run it. Plot the Pareto frontier. This is the demo moment.
+
+Phase 5 — **Dashboard**: React + Kepler.gl or Deck.gl. Focus on making the "what-if simulator" work end-to-end. That's your showstopper feature.
+
+---
+
+## How to win with the judges
+
+ISRO judges are scientists and engineers. Three things will separate you:
+
+**Lead with the physics.** In your first two slides, write out Q\* + Q_F = Q_H + Q_E + ΔQ_S and explain how your PINN embeds it. Mention Bowen ratio. Use the term "CFD surrogate." These people will immediately recognize that you're doing real science, not just Kaggle ML.
+
+**Cite ISRO satellites by name.** "We processed Resourcesat-2 LISS-IV data accessed via Bhuvan and INSAT-3D thermal pass data to derive multi-scale LST." Say this exactly. Watch their faces.
+
+**Show the Pareto frontier.** Print a curve — X axis: cost, Y axis: temperature reduction. Highlight three points labeled "Maximum cooling," "Budget-optimal," "Equity-first." Ask: "Which scenario should Bengaluru BBMP implement?" Then let the audience debate. You've just turned a technical demo into a policy conversation. Judges remember this.
+
+---
+
+Everything above is your blueprint. Where do you want me to go deepest first — the PINN implementation, the GNN construction, the optimization engine, or the dashboard code?

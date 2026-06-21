@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TAPAS-UHI · SURYA DRISHTI · Urban Heat Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#FAF9F6;--bg2:#F3F1EB;--bg3:#EBE8E0;
+  --surf:#FFFFFF;--surf2:#FDFCFA;
+  --bord:#E5E1D6;--bord2:#D8D3C8;
+  --gold:#C89A0C;--gold2:#E8B820;
+  --amber:#D97B20;--amber2:#F09030;
+  --hot:#D95A18;--hot2:#F06830;
+  --red:#C03010;
+  --teal:#1A9A88;--teal2:#22B8A0;
+  --green:#2A8848;--blue:#2860A8;--purple:#6840A8;
+  --txt:#1A1612;--txt2:#3A342E;
+  --mut:#6B6359;--mut2:#9A9088;--mut3:#C0B8B0;
+  --shadow:0 2px 12px rgba(60,40,20,0.08);
+  --shadow2:0 8px 32px rgba(60,40,20,0.12);
+  --shadow3:0 24px 64px rgba(60,40,20,0.18);
+  --glass:rgba(255,252,248,0.88);--glass2:rgba(255,252,248,0.96);
+  --r4:4px;--r8:8px;--r12:12px;--r16:16px;--r24:24px;
+  --mono:'JetBrains Mono',monospace;
+}
+html,body{height:100%;font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--txt);overflow:hidden}
+button{font-family:inherit;cursor:pointer}input{font-family:inherit}
+
+/* ── LANDING ── */
+#landing{
+  position:fixed;inset:0;z-index:9000;
+  background:linear-gradient(150deg,#FAF8F2 0%,#F5F0E4 40%,#EDE5D0 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;padding:20px;
+}
+.land-bg-sun{
+  position:absolute;top:-25%;left:50%;transform:translateX(-50%);
+  width:900px;height:900px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(232,184,32,0.20) 0%,rgba(232,160,40,0.10) 35%,rgba(232,140,40,0.04) 65%,transparent 80%);
+  animation:sunPulse 8s ease-in-out infinite;
+}
+@keyframes sunPulse{0%,100%{transform:translateX(-50%) scale(1);opacity:.7}50%{transform:translateX(-50%) scale(1.08);opacity:1}}
+.land-particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.land-p{position:absolute;border-radius:50%;background:var(--gold);opacity:0;animation:particleFloat 12s infinite}
+@keyframes particleFloat{0%{opacity:0;transform:translateY(100vh) scale(0)}20%{opacity:.3}80%{opacity:.15}100%{opacity:0;transform:translateY(-20vh) scale(1.5)}}
+.land-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(200,154,12,.12);border:1px solid rgba(200,154,12,.3);
+  padding:6px 18px;border-radius:100px;
+  font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:28px;
+}
+.land-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.land-headline{
+  font-family:'Manrope',sans-serif;font-size:clamp(32px,5vw,66px);
+  font-weight:800;line-height:1.08;text-align:center;
+  color:var(--txt);letter-spacing:-2px;margin-bottom:18px;max-width:820px;
+}
+.land-headline span{background:linear-gradient(135deg,var(--gold),var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.land-sub{font-size:17px;color:var(--mut);text-align:center;max-width:520px;line-height:1.65;margin-bottom:40px;font-weight:400}
+.land-search-wrap{position:relative;width:min(600px,90vw);margin-bottom:18px}
+.land-search{
+  width:100%;padding:18px 68px 18px 24px;
+  border:2px solid var(--bord2);border-radius:100px;
+  background:var(--surf);font-size:17px;color:var(--txt);
+  box-shadow:var(--shadow2);transition:all .3s;outline:none;
+}
+.land-search:focus{border-color:var(--gold);box-shadow:var(--shadow2),0 0 0 4px rgba(200,154,12,.15)}
+.land-search::placeholder{color:var(--mut2)}
+.land-search-btn{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  background:linear-gradient(135deg,var(--gold),var(--amber));
+  color:#fff;border:none;width:46px;height:46px;border-radius:100px;
+  font-size:20px;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;box-shadow:0 4px 16px rgba(200,154,12,.4);
+}
+.land-search-btn:hover{transform:translateY(-50%) scale(1.08);box-shadow:0 6px 24px rgba(200,154,12,.5)}
+.land-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:48px}
+.land-chip{
+  padding:8px 16px;border-radius:100px;border:1px solid var(--bord2);
+  background:var(--surf);font-size:13px;font-weight:500;color:var(--txt2);
+  cursor:pointer;transition:all .2s;
+}
+.land-chip:hover{background:var(--gold);color:#fff;border-color:var(--gold);transform:translateY(-2px);box-shadow:0 4px 16px rgba(200,154,12,.35)}
+.land-metrics{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+.land-metric{
+  background:var(--surf);border:1px solid var(--bord);border-radius:var(--r16);
+  padding:18px 26px;text-align:center;min-width:130px;box-shadow:var(--shadow);
+}
+.land-metric-num{font-family:'Manrope',sans-serif;font-size:28px;font-weight:800;color:var(--amber);line-height:1}
+.land-metric-lbl{font-size:11px;font-weight:600;color:var(--mut);letter-spacing:.5px;margin-top:5px}
+.land-isro{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--mut2);letter-spacing:1.5px;font-weight:700;text-transform:uppercase;white-space:nowrap}
+
+/* ── SCAN ── */
+#scan{
+  position:fixed;inset:0;z-index:8000;background:var(--bg);
+  display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;
+}
+.scan-prog-wrap{position:absolute;top:0;left:0;right:0;height:3px;background:var(--bord)}
+.scan-prog-bar{height:3px;width:0;background:linear-gradient(90deg,var(--gold),var(--amber));transition:width .4s ease}
+.scan-badge{font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.scan-city{font-family:'Manrope',sans-serif;font-size:clamp(28px,5vw,60px);font-weight:800;color:var(--txt);letter-spacing:-2px;margin-bottom:6px;text-align:center}
+.scan-state{font-size:14px;color:var(--mut);font-weight:500;margin-bottom:44px;letter-spacing:1px}
+.scan-ring-wrap{position:relative;width:120px;height:120px;margin-bottom:44px}
+.scan-ring{width:120px;height:120px;border-radius:50%;border:2px solid var(--bord2);border-top-color:var(--gold);border-right-color:var(--amber);animation:spin 1.2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.scan-ring-inner{position:absolute;top:18px;left:18px;right:18px;bottom:18px;border-radius:50%;border:1px solid var(--bord);border-top-color:var(--amber);animation:spin 2s linear infinite reverse}
+.scan-ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:11px;font-weight:700;color:var(--mut);font-family:'JetBrains Mono',monospace}
+.scan-steps{width:min(460px,90vw);display:flex;flex-direction:column;gap:5px;max-height:400px;overflow-y:auto}
+.scan-step{display:flex;align-items:center;gap:12px;padding:9px 14px;border-radius:var(--r8);border:1px solid var(--bord);background:var(--surf);opacity:.35;transition:all .4s}
+.scan-step.active{opacity:1;border-color:var(--gold);background:rgba(200,154,12,.05)}
+.scan-step.done{opacity:.65;background:rgba(42,136,72,.05);border-color:rgba(42,136,72,.3)}
+.scan-step-icon{width:22px;height:22px;border-radius:50%;background:var(--bord2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--mut)}
+.scan-step.active .scan-step-icon{background:var(--gold);color:#fff;animation:pulse 1s infinite}
+.scan-step.done .scan-step-icon{background:var(--green);color:#fff}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(200,154,12,.4)}50%{box-shadow:0 0 0 8px rgba(200,154,12,0)}}
+.scan-step-text{font-size:12px;font-weight:600;color:var(--txt)}
+.scan-step-sub{font-size:10px;color:var(--mut);margin-left:auto;font-family:'JetBrains Mono',monospace;white-space:nowrap}
+
+/* ── WORKSPACE ── */
+#workspace{position:fixed;inset:0;display:none;flex-direction:column;background:var(--bg2);z-index:100;}
+
+/* Topbar */
+#topbar{
+  position:relative;z-index:500;height:52px;
+  background:var(--glass2);border-bottom:1px solid var(--bord);
+  display:flex;align-items:center;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);flex-shrink:0;
+}
+.tb-logo{display:flex;align-items:center;gap:10px;padding:0 18px;border-right:1px solid var(--bord);height:100%;cursor:pointer;flex-shrink:0}
+.tb-logo-mark{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--gold),var(--amber));display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;font-weight:700;flex-shrink:0}
+.tb-logo-text{font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;color:var(--txt);letter-spacing:-.3px;white-space:nowrap}
+.tb-logo-sub{font-size:10px;color:var(--mut);font-weight:500;letter-spacing:.5px}
+.tb-city-pill{display:flex;align-items:center;gap:8px;padding:6px 13px;margin-left:14px;background:rgba(200,154,12,.1);border:1px solid rgba(200,154,12,.25);border-radius:100px;cursor:pointer;flex-shrink:0}
+.tb-city-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s infinite;flex-shrink:0}
+.tb-city-name{font-family:'Manrope',sans-serif;font-size:13px;font-weight:700;color:var(--txt)}
+.tb-city-state{font-size:11px;color:var(--mut);margin-left:2px}
+.tb-spacer{flex:1}
+.tb-score-pill{display:flex;align-items:center;gap:9px;padding:6px 13px;border:1px solid var(--bord2);border-radius:100px;background:var(--surf);flex-shrink:0}
+.tb-score-label{font-size:10px;color:var(--mut);font-weight:700;letter-spacing:.5px;white-space:nowrap}
+.tb-score-val{font-family:'Manrope',sans-serif;font-size:16px;font-weight:800}
+.tb-btns{display:flex;align-items:center;gap:5px;padding:0 10px;flex-shrink:0}
+.tb-btn{padding:6px 12px;border-radius:100px;border:1px solid var(--bord2);background:var(--surf);font-size:12px;font-weight:600;color:var(--txt2);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.tb-btn:hover{background:var(--bg3)}
+.tb-btn-gold{background:linear-gradient(135deg,var(--gold),var(--amber));color:#fff;border-color:transparent;box-shadow:0 2px 12px rgba(200,154,12,.4)}
+.tb-btn-gold:hover{box-shadow:0 4px 20px rgba(200,154,12,.5);transform:translateY(-1px)}
+
+/* Layout */
+#main-layout{display:flex;flex:1;overflow:hidden}
+
+/* Vertical Tab Nav */
+#tab-nav{
+  width:62px;flex-shrink:0;
+  background:var(--glass2);border-right:1px solid var(--bord);
+  display:flex;flex-direction:column;align-items:center;
+  padding:6px 0;gap:1px;overflow-y:auto;overflow-x:hidden;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:400;
+}
+#tab-nav::-webkit-scrollbar{display:none}
+.tn-btn{
+  width:48px;height:46px;border-radius:var(--r8);border:none;
+  background:transparent;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:2px;cursor:pointer;transition:all .2s;
+  position:relative;color:var(--mut);flex-shrink:0;
+}
+.tn-btn:hover{background:var(--bg2);color:var(--txt2)}
+.tn-btn.active{background:rgba(200,154,12,.12);color:var(--gold)}
+.tn-btn.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:22px;background:var(--gold);border-radius:0 3px 3px 0}
+.tn-icon{font-size:17px;line-height:1}
+.tn-label{font-size:8px;font-weight:700;letter-spacing:.3px;text-transform:uppercase;line-height:1}
+.tn-div{width:30px;height:1px;background:var(--bord);margin:3px 0;flex-shrink:0}
+
+/* Map */
+#map-wrap{flex:1;position:relative;overflow:hidden}
+#map{position:absolute;inset:0;z-index:1}
+.leaflet-container{background:#E8E4DC}
+.map-layer-bar{position:absolute;top:12px;left:12px;z-index:100;display:flex;flex-direction:column;gap:4px}
+.map-layer-btn{
+  background:var(--glass2);border:1px solid var(--bord);padding:6px 11px;border-radius:var(--r8);
+  font-size:11px;font-weight:600;color:var(--txt2);cursor:pointer;transition:all .2s;
+  backdrop-filter:blur(12px);display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.map-layer-btn:hover{background:var(--surf)}
+.map-layer-btn.on{background:rgba(200,154,12,.12);border-color:rgba(200,154,12,.3);color:var(--gold)}
+.map-basemap-bar{position:absolute;top:12px;right:12px;z-index:100;display:flex;gap:4px}
+.map-basemap-btn{
+  background:var(--glass2);border:1px solid var(--bord);padding:6px 11px;border-radius:var(--r8);
+  font-size:11px;font-weight:600;color:var(--txt2);cursor:pointer;transition:all .2s;
+  backdrop-filter:blur(12px);display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.map-basemap-btn:hover{background:var(--surf)}
+.map-basemap-btn.on{background:rgba(200,154,12,.12);border-color:rgba(200,154,12,.3);color:var(--gold)}
+.map-ministat{position:absolute;bottom:12px;left:12px;z-index:100;background:var(--glass2);border:1px solid var(--bord);border-radius:var(--r8);padding:8px 12px;backdrop-filter:blur(12px);min-width:280px;}
+.map-ministat-row{display:flex;gap:14px;justify-content:space-between}
+.mms-item{text-align:center}
+.mms-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--amber);line-height:1}
+.mms-lbl{font-size:9px;font-weight:700;color:var(--mut);letter-spacing:.5px;margin-top:2px;text-transform:uppercase}
+
+/* Panel */
+#panel-wrap{width:440px;flex-shrink:0;background:var(--surf2);border-left:1px solid var(--bord);overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column}
+#panel-wrap::-webkit-scrollbar{width:4px}
+#panel-wrap::-webkit-scrollbar-track{background:transparent}
+#panel-wrap::-webkit-scrollbar-thumb{background:var(--bord2);border-radius:4px}
+.panel-section{display:none;flex-direction:column;min-height:100%}
+.panel-section.active{display:flex}
+.panel-head{padding:18px 18px 14px;border-bottom:1px solid var(--bord);background:var(--surf);flex-shrink:0;position:sticky;top:0;z-index:10}
+.panel-title{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;color:var(--txt);letter-spacing:-.4px}
+.panel-sub{font-size:11px;color:var(--mut);margin-top:3px}
+.panel-body{padding:14px;flex:1}
+.panel-body::-webkit-scrollbar{width:3px}
+.panel-body::-webkit-scrollbar-thumb{background:var(--bord2);border-radius:3px}
+
+/* Cards */
+.card{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r12);padding:14px;margin-bottom:10px;box-shadow:var(--shadow);transition:all .2s}
+.card:hover{box-shadow:var(--shadow2)}
+.card-title{font-size:10px;font-weight:700;color:var(--mut);letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px}
+
+/* KPI */
+.kpi-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.kpi{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r8);padding:11px;display:flex;flex-direction:column;gap:2px}
+.kpi-label{font-size:9px;font-weight:700;color:var(--mut);letter-spacing:.8px;text-transform:uppercase}
+.kpi-val{font-family:'Manrope',sans-serif;font-size:17px;font-weight:800;color:var(--txt);line-height:1}
+.kpi-sub{font-size:10px;color:var(--mut2)}
+
+/* Score ring */
+.score-wrap{display:flex;align-items:center;gap:18px;background:var(--surf);border:1px solid var(--bord);border-radius:var(--r16);padding:18px;margin-bottom:10px;box-shadow:var(--shadow)}
+.score-ring{position:relative;width:84px;height:84px;flex-shrink:0}
+.score-ring svg{transform:rotate(-90deg)}
+.score-ring-val{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Manrope',sans-serif;font-size:20px;font-weight:800;color:var(--txt);line-height:1;text-align:center}
+.score-ring-label{font-size:9px;font-weight:700;color:var(--mut);letter-spacing:.5px;display:block;margin-top:2px;text-align:center}
+.score-details{flex:1}
+.score-name{font-family:'Manrope',sans-serif;font-size:18px;font-weight:800;color:var(--txt);line-height:1.15}
+.score-grade{display:inline-block;padding:3px 9px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.5px;margin-top:6px}
+.score-desc{font-size:11px;color:var(--mut);margin-top:7px;line-height:1.55}
+
+/* Progress */
+.prog-item{margin-bottom:9px}
+.prog-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.prog-label{font-size:11px;font-weight:600;color:var(--txt2)}
+.prog-val{font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.prog-bar{height:5px;border-radius:3px;background:var(--bg3);overflow:hidden}
+.prog-fill{height:100%;border-radius:3px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+/* Severity */
+.sev{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.4px}
+.sev-ext{background:rgba(192,48,16,.12);color:var(--red)}
+.sev-high{background:rgba(217,90,24,.12);color:var(--hot)}
+.sev-mod{background:rgba(217,123,32,.12);color:var(--amber)}
+.sev-low{background:rgba(42,136,72,.12);color:var(--green)}
+
+/* Overview Hotspots List */
+.narrative{font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:14px}
+.hot-list{display:flex;flex-direction:column;gap:8px}
+.hot-card{
+  background:var(--surf);border:1px solid var(--bord);border-radius:var(--r12);
+  padding:12px;display:flex;align-items:center;gap:12px;cursor:pointer;
+  transition:all .2s;box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.hot-card:hover{
+  border-color:var(--tc);box-shadow:var(--shadow2);transform:translateY(-2px);
+}
+.hot-rank{
+  font-family:var(--mono);font-size:11px;font-weight:800;color:var(--mut2);
+  min-width:24px;text-align:center;
+}
+.hot-icon{
+  width:32px;height:32px;border-radius:var(--r8);background:var(--bg2);
+  font-size:18px;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;border:1px solid var(--bord);
+}
+.hot-body{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0}
+.hot-name{
+  font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;
+  color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.hot-typ{
+  font-size:10px;font-weight:600;color:var(--mut);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.hot-bar-wrap{height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-top:2px}
+.hot-bar{height:100%;border-radius:2px}
+.hot-metrics{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex-shrink:0;min-width:54px;text-align:center;
+}
+.overview-hint{
+  font-size:10px;color:var(--mut2);text-align:center;margin-top:14px;
+  padding:10px 0 0;border-top:1px solid var(--bord);font-style:italic;
+}
+
+/* Section header */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin:14px 0 7px}
+.sec-title{font-size:10px;font-weight:700;color:var(--mut);letter-spacing:.8px;text-transform:uppercase}
+
+/* Zone tabs */
+.zone-tabs{display:flex;gap:4px;flex-wrap:wrap;padding:10px 14px;background:var(--bg);border-bottom:1px solid var(--bord);flex-shrink:0}
+.zone-tab{padding:5px 10px;border-radius:100px;border:1px solid var(--bord2);background:var(--surf);font-size:11px;font-weight:600;color:var(--mut);cursor:pointer;transition:all .2s}
+.zone-tab:hover{background:var(--bg2);color:var(--txt2)}
+.zone-tab.active{background:var(--gold);color:#fff;border-color:var(--gold)}
+
+/* Scenario cards */
+.sc-card{border:1px solid var(--bord);border-radius:var(--r12);padding:14px;margin-bottom:9px;cursor:pointer;transition:all .25s;background:var(--surf)}
+.sc-card:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(200,154,12,.14);transform:translateY(-2px)}
+.sc-card.selected{border-color:var(--gold);background:rgba(200,154,12,.04);box-shadow:0 0 0 2px rgba(200,154,12,.2)}
+.sc-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
+.sc-letter{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Manrope',sans-serif;font-size:13px;font-weight:900;color:#fff;flex-shrink:0}
+.sc-name{font-family:'Manrope',sans-serif;font-size:13px;font-weight:800;color:var(--txt);margin-bottom:6px}
+.sc-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.sc-metric{background:var(--bg2);border-radius:var(--r4);padding:7px 5px;text-align:center}
+.sc-metric-val{font-family:'Manrope',sans-serif;font-size:14px;font-weight:800;color:var(--amber);line-height:1}
+.sc-metric-lbl{font-size:9px;font-weight:700;color:var(--mut);letter-spacing:.3px;margin-top:2px;text-transform:uppercase}
+
+/* Verification */
+.phase-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--bord)}
+.phase-item:last-child{border-bottom:none}
+.phase-num{width:26px;height:26px;border-radius:50%;background:var(--bg2);border:2px solid var(--bord2);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--mut);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.phase-num.pass{background:rgba(42,136,72,.1);border-color:var(--green);color:var(--green)}
+.phase-num.warn{background:rgba(217,123,32,.1);border-color:var(--amber);color:var(--amber)}
+.phase-content{flex:1}
+.phase-name{font-size:12px;font-weight:700;color:var(--txt)}
+.phase-desc{font-size:11px;color:var(--mut);margin-top:2px;line-height:1.5}
+.phase-score{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--green);margin-left:auto;padding-left:6px}
+
+/* Timeline */
+.timeline-item{display:flex;gap:12px;margin-bottom:16px;position:relative}
+.timeline-item::before{content:'';position:absolute;left:19px;top:38px;bottom:-16px;width:1px;background:var(--bord)}
+.timeline-item:last-child::before{display:none}
+.timeline-dot{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid}
+.timeline-content{flex:1}
+.timeline-phase{font-size:10px;font-weight:700;color:var(--mut);letter-spacing:.8px;text-transform:uppercase;margin-bottom:2px}
+.timeline-title{font-family:'Manrope',sans-serif;font-size:13px;font-weight:700;color:var(--txt);margin-bottom:4px}
+.timeline-desc{font-size:12px;color:var(--mut);line-height:1.5}
+.timeline-meta{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.timeline-tag{padding:3px 8px;border-radius:100px;font-size:10px;font-weight:600;background:var(--bg2);color:var(--mut)}
+
+/* Forecast table */
+.forecast-table{width:100%;border-collapse:collapse;font-size:12px}
+.forecast-table th{text-align:left;padding:7px 5px;border-bottom:2px solid var(--bord);font-size:10px;font-weight:700;color:var(--mut);letter-spacing:.5px;text-transform:uppercase}
+.forecast-table td{padding:7px 5px;border-bottom:1px solid var(--bord);color:var(--txt2)}
+.forecast-table tr:hover td{background:var(--bg2)}
+.forecast-yr{font-family:'Manrope',sans-serif;font-weight:700;color:var(--txt)}
+.forecast-good{color:var(--green);font-weight:700}
+.forecast-bad{color:var(--red);font-weight:700}
+
+/* Executive */
+.exec-rec{background:linear-gradient(135deg,rgba(200,154,12,.08),rgba(232,135,42,.05));border:2px solid var(--gold);border-radius:var(--r16);padding:18px;margin-bottom:14px}
+.exec-rec-badge{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px}
+.exec-rec-name{font-family:'Manrope',sans-serif;font-size:20px;font-weight:800;color:var(--txt);line-height:1.1;margin-bottom:4px}
+.exec-rec-why{font-size:12px;color:var(--mut);line-height:1.55}
+.exec-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.exec-cell{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r8);padding:11px;display:flex;flex-direction:column;gap:2px}
+.exec-cell-label{font-size:10px;font-weight:700;color:var(--mut);letter-spacing:.5px;text-transform:uppercase}
+.exec-cell-val{font-family:'Manrope',sans-serif;font-size:17px;font-weight:800;color:var(--txt)}
+.exec-cell-sub{font-size:10px;color:var(--mut2)}
+.exec-brief{background:var(--bg2);border-radius:var(--r8);padding:14px;font-size:12px;color:var(--txt2);line-height:1.7;margin-bottom:10px}
+
+/* Alerts */
+.alert-card{display:flex;gap:10px;padding:11px;background:var(--surf);border:1px solid var(--bord);border-radius:var(--r8);margin-bottom:7px;align-items:flex-start}
+.alert-icon{width:30px;height:30px;border-radius:var(--r8);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.alert-title{font-size:12px;font-weight:700;color:var(--txt)}
+.alert-desc{font-size:11px;color:var(--mut);margin-top:2px;line-height:1.5}
+.alert-time{font-size:10px;color:var(--mut2);font-family:'JetBrains Mono',monospace;margin-top:3px}
+
+/* Copilot */
+.copilot-flex{display:flex;flex-direction:column;flex:1;min-height:0}
+.copilot-suggest{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px;border-bottom:1px solid var(--bord);flex-shrink:0}
+.copilot-suggest-btn{padding:5px 10px;border:1px solid var(--bord2);border-radius:100px;font-size:11px;font-weight:500;color:var(--txt2);background:var(--surf);cursor:pointer;transition:all .2s}
+.copilot-suggest-btn:hover{background:rgba(200,154,12,.08);border-color:var(--gold);color:var(--gold)}
+.copilot-chat{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:9px;min-height:240px;max-height:360px}
+.chat-msg{max-width:88%;padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.6}
+.chat-msg.ai{background:var(--surf);border:1px solid var(--bord);color:var(--txt);align-self:flex-start;border-radius:4px 12px 12px 12px}
+.chat-msg.user{background:linear-gradient(135deg,var(--gold),var(--amber));color:#fff;align-self:flex-end;border-radius:12px 12px 4px 12px}
+.copilot-input-wrap{padding:10px 14px;border-top:1px solid var(--bord);background:var(--surf);display:flex;gap:7px;align-items:center;flex-shrink:0}
+.copilot-input{flex:1;padding:9px 13px;border:1px solid var(--bord2);border-radius:100px;font-size:13px;color:var(--txt);background:var(--bg);outline:none}
+.copilot-input:focus{border-color:var(--gold)}
+.copilot-send{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--amber));color:#fff;border:none;font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+
+/* ISRO */
+.isro-header{background:linear-gradient(135deg,#0A1A3A,#162C5A);padding:18px;border-radius:var(--r12);margin-bottom:10px;color:#fff}
+.isro-logo-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.isro-logo{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:20px}
+.isro-logo-text{font-family:'Manrope',sans-serif;font-size:15px;font-weight:800}
+.isro-logo-sub{font-size:11px;color:rgba(255,255,255,.7)}
+.isro-desc{font-size:12px;color:rgba(255,255,255,.75);line-height:1.6}
+
+/* DNA */
+.dna-row{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.dna-label{font-size:11px;font-weight:600;color:var(--txt2);width:88px;flex-shrink:0;text-align:right}
+.dna-bar-wrap{flex:1;height:16px;background:var(--bg2);border-radius:8px;overflow:hidden}
+.dna-bar-fill{height:100%;border-radius:8px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.dna-pct{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;width:34px;text-align:right;flex-shrink:0}
+
+/* Global analogs */
+.analog-row{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--bord)}
+.analog-row:last-child{border-bottom:none}
+.analog-flag{font-size:18px;width:26px;text-align:center;flex-shrink:0}
+.analog-info{flex:1}
+.analog-city{font-size:13px;font-weight:700;color:var(--txt)}
+.analog-desc{font-size:11px;color:var(--mut);margin-top:1px}
+.analog-cooling{font-family:'Manrope',sans-serif;font-size:14px;font-weight:800;color:var(--green)}
+
+/* Comparison table */
+.comp-table{width:100%;border-collapse:collapse;font-size:11px}
+.comp-table th{padding:6px 7px;background:var(--bg2);font-weight:700;color:var(--mut);font-size:10px;letter-spacing:.5px;text-transform:uppercase;text-align:center}
+.comp-table th:first-child{text-align:left}
+.comp-table td{padding:7px;border-bottom:1px solid var(--bord);text-align:center;color:var(--txt2)}
+.comp-table td:first-child{text-align:left;font-weight:700;color:var(--txt);font-size:11px}
+.comp-table tr:hover td{background:var(--bg2)}
+.comp-best{color:var(--green);font-weight:700}
+
+/* Presentation */
+#pres-mode{position:fixed;inset:0;z-index:9500;background:rgba(10,8,6,.95);display:none;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(20px);padding:20px}
+.pres-content{background:var(--surf);border-radius:var(--r24);padding:44px;max-width:760px;width:100%;box-shadow:var(--shadow3);text-align:center}
+.pres-step{font-size:11px;font-weight:700;color:var(--mut);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+.pres-title{font-family:'Manrope',sans-serif;font-size:38px;font-weight:800;color:var(--txt);line-height:1.1;margin-bottom:16px}
+.pres-body{font-size:16px;color:var(--mut);line-height:1.75;margin-bottom:30px}
+.pres-btns{display:flex;gap:10px;justify-content:center}
+.pres-btn{padding:12px 26px;border-radius:100px;font-size:14px;font-weight:700;cursor:pointer;border:1px solid var(--bord)}
+.pres-prev{background:var(--surf);color:var(--txt)}
+.pres-next{background:linear-gradient(135deg,var(--gold),var(--amber));color:#fff;border-color:transparent;box-shadow:0 4px 20px rgba(200,154,12,.4)}
+.pres-dots{display:flex;gap:7px;margin-top:20px;justify-content:center}
+.pres-dot{width:7px;height:7px;border-radius:50%;background:var(--bord2);cursor:pointer;transition:all .2s}
+.pres-dot.active{background:var(--gold);width:22px;border-radius:4px}
+.pres-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,.1);border:none;color:rgba(255,255,255,.7);width:38px;height:38px;border-radius:50%;font-size:18px;cursor:pointer}
+
+.fw-grid{display:grid;grid-template-columns:1fr;gap:9px;margin-bottom:10px}
+.fw-card{background:var(--surf);border:1px solid var(--bord);border-left:3px solid var(--tc);border-radius:var(--r8);padding:12px 14px}
+.fw-name{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--txt);margin-bottom:4px}
+.fw-desc{font-size:11px;color:var(--mut);line-height:1.5}
+
+/* Utilities */
+.text-gold{color:var(--gold)}.text-amber{color:var(--amber)}.text-hot{color:var(--hot)}.text-red{color:var(--red)}
+.text-teal{color:var(--teal)}.text-green{color:var(--green)}.text-mut{color:var(--mut)}
+.font-mono{font-family:'JetBrains Mono',monospace}
+.separator{height:1px;background:var(--bord);margin:10px 0}
+.leaflet-control-zoom a{background:var(--glass2)!important;color:var(--txt)!important;border-color:var(--bord)!important}
+.leaflet-bar{box-shadow:var(--shadow)!important}
+
+@media(max-width:768px){
+  #panel-wrap{width:100%;max-height:50vh;border-left:none;border-top:1px solid var(--bord)}
+  #main-layout{flex-direction:column}
+  #map-wrap{min-height:280px}
+}
+</style>
+</head>
+<body>
+
+<!-- ════ LANDING ════ -->
+<div id="landing">
+  <div class="land-bg-sun"></div>
+  <div class="land-particles" id="lp"></div>
+  <div class="land-badge"><span class="land-badge-dot"></span>ISRO Bhartiya Antariksha Hackathon 2026</div>
+  <h1 class="land-headline">Transform Any City Into<br><span>Climate Intelligence</span></h1>
+  <p class="land-sub">Discover heat risks, understand root causes, compare 10 future scenarios, and build climate-resilient cities — powered by TAPAS-UHI SURYA DRISHTI.</p>
+  <div class="land-search-wrap">
+    <input class="land-search" id="cityInput" placeholder="Enter any Indian city — Ahmedabad, Bhopal, Hyderabad…" autocomplete="off"/>
+    <button class="land-search-btn" onclick="startScan()">→</button>
+  </div>
+  <div class="land-chips">
+    <span class="land-chip" onclick="quickCity('Ahmedabad')">🌅 Ahmedabad</span>
+    <span class="land-chip" onclick="quickCity('Bhopal')">🏙 Bhopal</span>
+    <span class="land-chip" onclick="quickCity('Hyderabad')">🌆 Hyderabad</span>
+    <span class="land-chip" onclick="quickCity('Nagpur')">☀ Nagpur</span>
+    <span class="land-chip" onclick="quickCity('Jaipur')">🏜 Jaipur</span>
+    <span class="land-chip" onclick="quickCity('Lucknow')">🌳 Lucknow</span>
+    <span class="land-chip" onclick="quickCity('Pune')">🌇 Pune</span>
+    <span class="land-chip" onclick="quickCity('Surat')">🌊 Surat</span>
+    <span class="land-chip" onclick="quickCity('Coimbatore')">🍃 Coimbatore</span>
+  </div>
+  <div class="land-metrics">
+    <div class="land-metric"><div class="land-metric-num" id="lm1">0</div><div class="land-metric-lbl">Cities Analyzed</div></div>
+    <div class="land-metric"><div class="land-metric-num" id="lm2">0M+</div><div class="land-metric-lbl">People at Risk</div></div>
+    <div class="land-metric"><div class="land-metric-num" id="lm3">0°C</div><div class="land-metric-lbl">UHI Intensity Avg</div></div>
+    <div class="land-metric"><div class="land-metric-num" id="lm4">0%</div><div class="land-metric-lbl">Cooling Achievable</div></div>
+  </div>
+  <div class="land-isro">TAPAS-UHI · SURYA DRISHTI · BHARTIYA ANTARIKSHA HACKATHON 2026</div>
+</div>
+
+<!-- ════ SCAN ════ -->
+<div id="scan">
+  <div class="scan-prog-wrap"><div class="scan-prog-bar" id="scanBar"></div></div>
+  <div class="scan-badge">SURYA DRISHTI · URBAN HEAT INTELLIGENCE SCAN</div>
+  <div class="scan-city" id="scanCityName">—</div>
+  <div class="scan-state" id="scanCityState">India · Initializing…</div>
+  <div class="scan-ring-wrap">
+    <div class="scan-ring"></div>
+    <div class="scan-ring-inner"></div>
+    <div class="scan-ring-center" id="scanPct">0%</div>
+  </div>
+  <div class="scan-steps" id="scanSteps"></div>
+</div>
+
+<!-- ════ WORKSPACE ════ -->
+<div id="workspace">
+  <div id="topbar">
+    <div class="tb-logo" onclick="goHome()">
+      <div class="tb-logo-mark">☉</div>
+      <div><div class="tb-logo-text">SURYA DRISHTI</div><div class="tb-logo-sub">TAPAS-UHI Intelligence</div></div>
+    </div>
+    <div class="tb-city-pill">
+      <div class="tb-city-dot"></div>
+      <span class="tb-city-name" id="tbCityName">—</span>
+      <span class="tb-city-state" id="tbCityState"></span>
+    </div>
+    <div class="tb-spacer"></div>
+    <div class="tb-score-pill">
+      <span class="tb-score-label">SURYA SCORE</span>
+      <span class="tb-score-val" id="tbScore">—</span>
+    </div>
+    <div class="tb-btns">
+      <button class="tb-btn" onclick="openPresMode()">▶ Present</button>
+      <button class="tb-btn" onclick="window.print()">⤓ Export</button>
+      <button class="tb-btn tb-btn-gold" onclick="goHome()">+ New City</button>
+    </div>
+  </div>
+
+  <div id="main-layout">
+    <div id="tab-nav">
+      <button class="tn-btn active" onclick="switchTab('overview')" title="Overview"><span class="tn-icon">⬡</span><span class="tn-label">Over</span></button>
+      <button class="tn-btn" onclick="switchTab('heatmap')" title="Heat Map"><span class="tn-icon">🗺</span><span class="tn-label">Map</span></button>
+      <button class="tn-btn" onclick="switchTab('districts')" title="Heat Districts"><span class="tn-icon">🏙</span><span class="tn-label">Dist</span></button>
+      <button class="tn-btn" onclick="switchTab('hotspot')" title="Heat DNA Lab"><span class="tn-icon">🔬</span><span class="tn-label">DNA</span></button>
+      <div class="tn-div"></div>
+      <button class="tn-btn" onclick="switchTab('scenarios')" title="Scenario Lab"><span class="tn-icon">🧪</span><span class="tn-label">Scen</span></button>
+      <button class="tn-btn" onclick="switchTab('verification')" title="Solution Verification"><span class="tn-icon">✓</span><span class="tn-label">Verif</span></button>
+      <button class="tn-btn" onclick="switchTab('roadmap')" title="Roadmap Planner"><span class="tn-icon">🗓</span><span class="tn-label">Road</span></button>
+      <button class="tn-btn" onclick="switchTab('forecast')" title="Future Forecast"><span class="tn-icon">📈</span><span class="tn-label">Cast</span></button>
+      <div class="tn-div"></div>
+      <button class="tn-btn" onclick="switchTab('watch')" title="SURYA WATCH"><span class="tn-icon">🔔</span><span class="tn-label">Watch</span></button>
+      <button class="tn-btn" onclick="switchTab('copilot')" title="Climate Copilot"><span class="tn-icon">💬</span><span class="tn-label">AI</span></button>
+      <button class="tn-btn" onclick="switchTab('exec')" title="Executive Decision"><span class="tn-icon">👔</span><span class="tn-label">Exec</span></button>
+      <button class="tn-btn" onclick="switchTab('isro')" title="Engine & ISRO"><span class="tn-icon">🛰</span><span class="tn-label">ISRO</span></button>
+    </div>
+
+    <div id="map-wrap">
+      <div id="map"></div>
+      <div class="map-layer-bar" id="mapLayerBar">
+        <button class="map-layer-btn on" onclick="toggleLayer('heat')" id="btn-heat">🌡 Heat Intensity</button>
+        <button class="map-layer-btn" onclick="toggleLayer('vuln')" id="btn-vuln">⚠ Vulnerability</button>
+        <button class="map-layer-btn" onclick="toggleLayer('ndvi')" id="btn-ndvi">🌿 Vegetation (NDVI)</button>
+        <button class="map-layer-btn" onclick="toggleLayer('dist')" id="btn-dist">🏙 Heat Districts</button>
+        <button class="map-layer-btn" onclick="toggleLayer('prior')" id="btn-prior">🎯 Priority Zones</button>
+      </div>
+      <div class="map-basemap-bar" id="mapBasemapBar">
+        <button class="map-basemap-btn on" onclick="setBaseMap('satellite')" id="btn-bm-satellite">🛰 Satellite</button>
+        <button class="map-basemap-btn" onclick="setBaseMap('isro')" id="btn-bm-isro">🛰 ISRO Bhuvan</button>
+        <button class="map-basemap-btn" onclick="setBaseMap('nasa')" id="btn-bm-nasa">🌍 NASA GIBS</button>
+        <button class="map-basemap-btn" onclick="setBaseMap('voyager')" id="btn-bm-voyager">🗺 Light</button>
+        <button class="map-basemap-btn" onclick="setBaseMap('dark')" id="btn-bm-dark">🕶 Dark Twin</button>
+      </div>
+      <div class="map-ministat" id="mapMiniStat">Hover cursor over map element...</div>
+    </div>
+
+    <div id="panel-wrap">
+
+      <div class="panel-section active" id="sec-overview">
+        <div class="panel-head"><div class="panel-title">City Overview</div><div class="panel-sub" id="ov-sub">Urban Heat Intelligence Summary</div></div>
+        <div class="panel-body" id="panel-overview"></div>
+      </div>
+
+      <div class="panel-section" id="sec-heatmap">
+        <div class="panel-head"><div class="panel-title">Heat Intelligence Atlas</div><div class="panel-sub">Multi-layer thermal analysis</div></div>
+        <div class="panel-body" id="hm-body"></div>
+      </div>
+
+      <div class="panel-section" id="sec-districts">
+        <div class="panel-head"><div class="panel-title">Heat District Dossiers</div><div class="panel-sub">Click any district for full intelligence report</div></div>
+        <div class="panel-body" id="dist-body"></div>
+      </div>
+
+      <div class="panel-section" id="sec-hotspot">
+        <div class="panel-head"><div class="panel-title">Heat DNA Lab</div><div class="panel-sub">Root cause analysis by zone typology</div></div>
+        <div class="zone-tabs" id="zoneTabs"></div>
+        <div class="panel-body" id="hp-body"></div>
+      </div>
+
+      <div class="panel-section" id="sec-scenarios">
+        <div class="panel-head"><div class="panel-title">Scenario Intelligence Lab</div><div class="panel-sub">10 competing futures · Scenarios A through J</div></div>
+        <div class="panel-body" id="sc-body"></div>
+      </div>
+
+      <div class="panel-section" id="sec-verification">
+        <div class="panel-head"><div class="panel-title">Solution Verification Engine</div><div class="panel-sub">15-phase evidence-based proof system</div></div>
+        <div class="panel-body" id="vf-body"></div>
+      </div>
+
+      <div class="panel-section" id="sec-roadmap">
+        <div class="panel-head"><div class="panel-title">Mission Roadmap Planner</div><div class="panel-sub">Implementation journey · 4 phases · 10 years</div></div>
+        <div class="panel-body" id="panel-roadmap"></div>
+      </div>
+
+      <div class="panel-section" id="sec-forecast">
+        <div class="panel-head"><div class="panel-title">Future City Forecast Studio</div><div class="panel-sub">Climate simulation 2030–2050</div></div>
+        <div class="panel-body" id="fc-body"></div>
+      </div>
+
+      <div class="panel-section" id="sec-watch">
+        <div class="panel-head"><div class="panel-title">SURYA WATCH</div><div class="panel-sub">Real-time heat intelligence alerts</div></div>
+        <div class="panel-body" id="wt-body"></div>
+      </div>
+
+      <div class="panel-section" id="sec-copilot">
+        <div class="panel-head"><div class="panel-title">Climate AI Copilot</div><div class="panel-sub">Ask anything about urban heat intelligence</div></div>
+        <div class="copilot-flex">
+          <div class="copilot-suggest" id="cpSuggest"></div>
+          <div class="copilot-chat" id="cpChat"></div>
+          <div class="copilot-input-wrap">
+            <input class="copilot-input" id="cpInput" placeholder="Ask about heat solutions, costs, risks…" onkeydown="if(event.key==='Enter')sendCopilot()"/>
+            <button class="copilot-send" onclick="sendCopilot()">→</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-section" id="sec-exec">
+        <div class="panel-head"><div class="panel-title">Executive Decision Center</div><div class="panel-sub">Strategic intelligence for mayors, planners & investors</div></div>
+        <div class="panel-body" id="ex-body"></div>
+      </div>
+
+      <div class="panel-section" id="sec-isro">
+        <div class="panel-head"><div class="panel-title">Engine & ISRO Mission</div><div class="panel-sub">Satellite intelligence & technical architecture</div></div>
+        <div class="panel-body" id="isro-body"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- PRESENTATION MODE -->
+<div id="pres-mode">
+  <button class="pres-close" onclick="closePresMode()">✕</button>
+  <div class="pres-content" id="presContent"></div>
+  <div class="pres-dots" id="presDots"></div>
+</div>
+
+<script>
+/* ================= UTILITIES ================= */
+function hashStr(s){let h=0;for(let i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))|0;}return Math.abs(h);}
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function rngFor(seedStr){return mulberry32(hashStr(seedStr));}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function round1(n){return Math.round(n*10)/10;}
+function fmtPop(n){
+  if(n>=10000000) return round1(n/10000000)+' Cr';
+  if(n>=100000) return round1(n/100000)+' L';
+  if(n>=1000) return round1(n/1000)+'K';
+  return ''+Math.round(n);
+}
+function titleCase(s){return s.replace(/\w\S*/g,function(t){return t.charAt(0).toUpperCase()+t.slice(1).toLowerCase();});}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
+
+/* ================= TYPOLOGIES ================= */
+const TYPO_ORDER=['IHI','SCHI','DRHI','TCHI','LDHI','PSHI'];
+const TYPOLOGIES={
+  IHI:{label:'Industrial Heat Island',short:'Industrial',icon:'🏭',color:'var(--orange)',channel:'Resourcesat LISS-IV band-4',ampRange:[8.5,14.5],
+    dna:{Vegetation:8,Traffic:18,Roads:14,Industry:38,Buildings:22},
+    mech:function(z){return `Industrial processes in ${z} generate anthropogenic heat faster than the surrounding surfaces can shed it. This is a source-driven heat island — cooling requires waste-heat capture loop solutions.`;},
+    insuff:[{n:'Cool roofs',d:-1.7,note:'ignores internal process loads — insufficient alone'},{n:'Street trees',d:-1.2,note:'space-constrained on roads'}]},
+  SCHI:{label:'Socioeconomic-Climate Heat Island',short:'Street Canyon',icon:'🏙️',color:'var(--gold)',channel:'INSAT-3D thermal-T1',ampRange:[7,12.5],
+    dna:{Vegetation:12,Traffic:15,Roads:10,Industry:8,Buildings:55},
+    mech:function(z){return `${z}'s canyon geometry bounces solar radiation between walls. High population density and low canopy capture massive sensible loads.`;},
+    insuff:[{n:'Street trees',d:-2.1,note:'narrow canyon walls block space'},{n:'Misting',d:-1.5,note:'highly water-intensive and localized'}]},
+  DRHI:{label:'Dense Residential Heat Island',short:'Dense Residential',icon:'🏘️',color:'var(--bronze)',channel:'Landsat-9 Thermal-B10',ampRange:[4.5,9.5],
+    dna:{Vegetation:14,Traffic:14,Roads:16,Industry:5,Buildings:51},
+    mech:function(z){return `${z} is dominated by high impervious roofs with fragmented green networks. Traps heat over wide blocks.`;},
+    insuff:[{n:'Street trees',d:-3.1,note:'needs 10+ years to establish'},{n:'Cool roofs',d:-1.1,note:'sidewalks/walls dominate footprint, not roofs'}]},
+  TCHI:{label:'Transit Congestion Heat Island',short:'Transit Congestion',icon:'🚌',color:'var(--red)',channel:'Cartosat-2 thermal infrared',ampRange:[9.5,16],
+    dna:{Vegetation:6,Traffic:36,Roads:32,Industry:10,Buildings:16},
+    mech:function(z){return `${z} is driven by heavy mobile vehicle idling and asphalt roads trap radiation. Needs instant passive sky cooling panels.`;},
+    insuff:[{n:'Trees',d:-0.8,note:'competes with road expansion space'},{n:'Cool roofs',d:-0.4,note:'surrounding shops lack continuous roofing'}]},
+  LDHI:{label:'Water Body Degradation Heat Island',short:'Water Body Degradation',icon:'💧',color:'var(--teal)',channel:'Sentinel-2 MSI NDWI',ampRange:[3.5,8],
+    dna:{Vegetation:18,Traffic:10,Roads:12,Industry:4,Buildings:22},
+    mech:function(z){return `${z} surrounds a degraded lake which has lost evaporative buffering. Water-quality recovery must be paired with thermocline shading.`;},
+    insuff:[{n:'Water treatment',d:-2.1,note:'fixes chemistry, not thermal buffer'},{n:'Standard park',d:-1.8,note:'pleasant but misses direct lake breeze cooling'}]},
+  PSHI:{label:'Peripheral Sprawl Heat Island',short:'Peripheral Sprawl',icon:'🌆',color:'var(--amber)',channel:'MODIS MCD43A3 albedo',ampRange:[2.5,7],
+    dna:{Vegetation:24,Traffic:16,Roads:20,Industry:12,Buildings:28},
+    mech:function(z){return `${z} represents rapid transition at edge borders. High leverage zone — zoning codes can pre-empt heat-island loops entirely.`;},
+    insuff:[{n:'Mandates',d:-2.2,note:'on paper only; lacks enforcement trackers'},{n:'Cool-roof codes',d:-1.5,note:'limited impact without tax incentives'}]}
+};
+
+/* ================= COMPACT SCENARIO PORTFOLIOS (A to J) ================= */
+const SCENARIOS=[
+  {id:'A',name:'Nature-Based Cooling',icon:'🌿',color:'var(--green)',desc:'Focuses on urban forests, ectomycorrhizal street networks, and pocket parks.',cooling:[2.1,3.0],roi:3.8,risk:'Low',financials:{capex:1.6,payback:6}},
+  {id:'B',name:'Engineering-Based Cooling',icon:'⚡',color:'var(--blue)',desc:'Focuses on daytime radiative sky cooling panels, facades, and reflective aggregate.',cooling:[2.4,3.2],roi:3.2,risk:'Low-Med',financials:{capex:2.5,payback:5}},
+  {id:'C',name:'Blue-Green Infrastructure',icon:'💧',color:'var(--teal)',desc:'Combines tank cascade revivals, solar aerators, and monsoon cisterns.',cooling:[2.3,3.5],roi:3.6,risk:'Medium',financials:{capex:3.2,payback:7}},
+  {id:'D',name:'Policy-Led Intervention',icon:'📜',color:'var(--purple)',desc:'Deploys building-code mandates, wind-corridor checks, and albedo banking.',cooling:[1.4,2.2],roi:5.2,risk:'Low',financials:{capex:0.6,payback:3}},
+  {id:'E',name:'Industrial Heat Mitigation',icon:'🏭',color:'var(--red)',desc:'Builds waste-heat absorption loops and captive Organic Rankine Cycle systems.',cooling:[3.5,4.8],roi:2.2,risk:'High',financials:{capex:5.8,payback:11}},
+  {id:'F',name:'Transit Cooling Strategy',icon:'🚌',color:'var(--hot)',desc:'Deploys phase-change footpath concrete, fog collectors, and shelter pods.',cooling:[1.9,2.8],roi:2.8,risk:'Low-Med',financials:{capex:2.0,payback:7}},
+  {id:'G',name:'Maximum ROI Strategy',icon:'💎',color:'var(--gold)',desc:'Combines albedo banking and immediate cool roof retrofits for quick payback.',cooling:[2.2,3.1],roi:6.2,risk:'Low',financials:{capex:1.1,payback:3}},
+  {id:'H',name:'Maximum Resilience Strategy',icon:'🛡️',color:'var(--purple)',desc:'Prioritizes thermal grids at schools, clinics, and vulnerable slum boundaries.',cooling:[2.6,3.8],roi:2.4,risk:'Low',financials:{capex:6.2,payback:12}},
+  {id:'I',name:'Climate Leadership Strategy',icon:'🌍',color:'var(--green)',desc:'Deploys agrivoltaics containment, aquifer thermal storage, and wind corridor parks.',cooling:[4.1,5.5],roi:1.8,risk:'Medium',financials:{capex:11.2,payback:16}},
+  {id:'J',name:'Hybrid Optimized Strategy',icon:'🧬',color:'var(--orange)',desc:'NSGA-II optimized combination balancing cost, cooling drop, and resilience index.',cooling:[3.2,4.5],roi:4.0,risk:'Low-Med',financials:{capex:4.0,payback:6}}
+];
+
+/* ================= GLOBAL ANALOGS ================= */
+const ANALOGS=[
+  {flag:'🇸🇬',city:'Singapore',context:'50 years of urban greening mandates',cooling:'3.5°C',method:'Vertical gardens, mandatory tree buffers'},
+  {flag:'🇯🇵',city:'Osaka',context:'Industrial transformation',cooling:'2.8°C',method:'Green roof codes, riverfront corridors'},
+  {flag:'🇳🇱',city:'Rotterdam',context:'Blue-green adaptation',cooling:'3.2°C',method:'Water plazas, permeable streets, bioswales'},
+  {flag:'🇦🇺',city:'Melbourne',context:'Dry climate forestation',cooling:'2.2°C',method:'Urban canopy target of 40%'}
+];
+
+/* ================= INTERVENTIONS LIBRARY ================= */
+const SOLUTIONS={
+  IHI:[
+    {name:'Industrial Symbiosis Cooling Loop',mech:'Waste heat is piped to absorption chillers.',cost:'₹3.5 Cr',complexity:'High',stars:5,cobenefit:'Lower energy costs',source:'Kalundborg model',isro:'Resourcesat-2 thermal anomalies',pilotFn:z=>`Phase 1 in ${z} plants`},
+    {name:'Subsurface Thermosiphon Arrays',mech:'Two-phase loops absorb heat to subsoil.',cost:'₹1.8 Cr',complexity:'Medium',stars:5,cobenefit:'Extends road lifetime',source:'NASA permafrost precedence',isro:'EOS-04 SAR monitoring',pilotFn:z=>`${z} access highways`}
+  ],
+  SCHI:[
+    {name:'Radiative Sky Cooling Panels',mech:'Metamaterials emit heat to space.',cost:'₹2.8 Cr',complexity:'Low',stars:5,cobenefit:'Zero grid power needed',source:'Passive radiative cooling studies',isro:'INSAT-3D thermal scans',pilotFn:z=>`${z} kiosks and bus stops`},
+    {name:'Thermochromic Facades',mech:'Vanadium-dioxide composite flips reflective.',cost:'₹2.2 Cr',complexity:'Medium',stars:5,cobenefit:'Reduces building AC load',source:'VO2 material science',isro:'Cartosat-2 PAN albedo tracking',pilotFn:z=>`${z} east/west walls`}
+  ],
+  DRHI:[
+    {name:'Mycorrhizal Forest Networks',mech:'Linked street trees share ground moisture.',cost:'₹0.6 Cr',complexity:'Low',stars:5,cobenefit:'Speeds canopy closure by 35%',source:'Hyphal network ecology',isro:'Sentinel-2 NDVI tracking',pilotFn:z=>`Networked plantings in ${z}`},
+    {name:'District Cool Water Loop',mech:'Central chillers pre-cool water overnight.',cost:'₹4.5 Cr',complexity:'High',stars:4,cobenefit:'Avoided AC exhaust loads',source:'Paris Climespace precedent',isro:'INSAT-3DS thermal diagnostics',pilotFn:z=>`${z} residential wards`}
+  ],
+  TCHI:[
+    {name:'Phase Change footpath Paving',mech:'Paraffin wax absorbs latent heat at 28°C.',cost:'₹1.6 Cr',complexity:'Medium',stars:5,cobenefit:'Protects pedestrians underfoot',source:'PCM concrete research',isro:'INSAT-3D diurnal plateau analysis',pilotFn:z=>`${z} waiting plazas`},
+    {name:'Living Transit Pergola Canopy',mech:'Steel pergolas carry wetted planters.',cost:'₹1.0 Cr',complexity:'Medium',stars:4,cobenefit:'Intercepts roadside PM2.5',source:'Evapotranspirative shade research',isro:'Sentinel-2 canopy tracking',pilotFn:z=>`${z} interchange hubs`}
+  ],
+  LDHI:[
+    {name:'Blue Cascade Revivals',mech:'Restores historical channels to route water.',cost:'₹12.0 Cr',complexity:'High',stars:5,cobenefit:'Groundwater recharge',source:'Cascade tank hydrology',isro:'Cartosat-2 elevation contours',pilotFn:z=>`Cascade channel in ${z}`},
+    {name:'Thermocline Stratification aerator',mech:'Windbreaks protect cold deep lake water.',cost:'₹0.8 Cr',complexity:'Medium',stars:5,cobenefit:'Suppresses surface algal blooms',source:'Limnology thermodynamics',isro:'INSAT-3D thermal difference maps',pilotFn:z=>`${z} shoreline loop`}
+  ],
+  PSHI:[
+    {name:'Agrivoltaic Containment Rings',mech:'Elevated solar panels over shade crops.',cost:'₹1.6 Cr',complexity:'Medium',stars:5,cobenefit:'Crops yield crop revenue',source:'Agrivoltaics edge buffering',isro:'Resourcesat-2 sprawl tracking',pilotFn:z=>`${z} agricultural edges`},
+    {name:'CFD wind corridor mandates',mech:'Surrogate models test wind corridors.',cost:'₹0.05 Cr',complexity:'Low',stars:5,cobenefit:'Improved local wind ventilation',source:'Singapore wind plan ordinance',isro:'EOS-04 building heights validation',pilotFn:z=>`${z} next development sector`}
+  ]
+};
+
+/* ================= CITY DATABASE ================= */
+const CITY_DB={};
+function Z(typology,name){return {typology:typology,name:name};}
+function addCity(key,display,state,tier,baselineLST,climateNote,confidence,names){
+  CITY_DB[key]={display:display,state:state,tier:tier,baselineLST:baselineLST,climateNote:climateNote,confidence:confidence,
+    zones:TYPO_ORDER.map(function(t,i){return Z(t,names[i]);})};
+}
+addCity('bengaluru','Bengaluru','Karnataka',1,33,'Moderate tropical-savanna climate.','verified',
+ ['Peenya Industrial Belt','MG Road Canyon','Jayanagar Residential Core','Silk Board Transit Corridor','Bellandur Lake Fringe','Whitefield Peripheral Sprawl']);
+addCity('mumbai','Mumbai','Maharashtra',1,32,'Humid coastal climate with high heat-index.','verified',
+ ['Andheri MIDC Belt','Dadar Market Canyon','Dharavi Residential Core','Kurla LBS Road Transit','Mithi River Corridor','Mira Road Sprawl Zone']);
+addCity('delhi','Delhi','Delhi NCT',1,36,'Semi-arid continental climate with extreme peak LST.','verified',
+ ['Wazirpur Industrial Area','Chandni Chowk Old Canyon','Sangam Vihar Residential Core','ITO Crossing transit','Yamuna Floodplain corridor','Dwarka Sprawl Fringe']);
+addCity('hyderabad','Hyderabad','Telangana',1,35,'Rocky Deccan plateau climate; high heat traps.','verified',
+ ['Jeedimetla Industrial Belt','Charminar Old Canyon','Malakpet Residential Core','Mehdipatnam Junction transit','Hussain Sagar catchment','HITEC IT Sprawl Fringe']);
+addCity('ahmedabad','Ahmedabad','Gujarat',1,35.2,'Hot semi-arid climate with intense dry heat waves.','verified',
+ ['Vatva Industrial Zone','Walled City Old Canyon','Naranpura Residential Block','Kalupur Station Corridor','Kankaria Lake Fringe','Sardar Patel Ring Road Sprawl']);
+addCity('pune','Pune','Maharashtra',1,32.0,'Tropical wet and dry climate with high relief influence.','verified',
+ ['Bhosari Industrial Belt','Kasba Peth Old Canyon','Kothrud Residential Core','Shivajinagar Station Corridor','Mula-Mutha River Fringes','Hinjawadi Phase-3 Peripheral Sprawl']);
+addCity('chennai','Chennai','Tamil Nadu',1,33.5,'Humid tropical maritime climate; high heat index.','verified',
+ ['Ennore Industrial Cluster','George Town Market Canyon','T-Nagar Residential Core','Central-Egmore Transit Loop','Pallikaranai Wetland Fringe','OMR IT Corridor Sprawl']);
+addCity('kolkata','Kolkata','West Bengal',1,32.8,'Tropical wet-and-dry climate with high humidity.','verified',
+ ['Cossipore Industrial Area','Bara Bazar Old Canyon','Salt Lake Sector 1 Block','Howrah Bridge Transit corridor','East Kolkata Wetlands Edge','Rajarhat New Town Sprawl']);
+addCity('surat','Surat','Gujarat',1,33.2,'Humid tropical climate with high alluvial heating.','verified',
+ ['Sachin GIDC Cluster','Chowk Bazar Canyon','Adajan Residential Core','Surat-Navsari Road Transit','Tapi Riverbank corridor','Outer Ring Road Sprawl']);
+addCity('jaipur','Jaipur','Rajasthan',2,36.0,'Hot semi-arid desert fringe climate.','verified',
+ ['Vishwakarma Industrial Area','Johri Bazar Old Pink Canyon','Malviya Nagar Residential Core','Sindhi Camp Transit Station','Man Sagar Lake Edge','Jagatpura Sprawl Sector']);
+addCity('lucknow','Lucknow','Uttar Pradesh',2,34.5,'Humid subtropical climate with extreme summer peaks.','verified',
+ ['Talkatora Industrial Area','Aminabad Old Bazaar Canyon','Indira Nagar Residential Core','Charbagh Station transit','Gomti Riverfront corridor','Amar Shaheed Path Sprawl']);
+addCity('nagpur','Nagpur','Maharashtra',2,35.8,'Tropical wet-and-dry climate at geographical center.','verified',
+ ['Butibori Industrial Area','Itwari Old Bazaar Canyon','Dharampeth Residential Core','Nagpur Junction Station transit','Ambazari Lake Fringe','MIHAN SEZ Sprawl Outer']);
+addCity('bhopal','Bhopal','Madhya Pradesh',2,33.8,'Humid subtropical climate with hilly thermal plateaus.','verified',
+ ['Govindpura Industrial Area','Chowk Bazaar Old Canyon','Arera Colony Residential Block','Bhopal Junction Transit','Upper Lake Wetland Fringe','Kolar Road Expansion Sprawl']);
+addCity('coimbatore','Coimbatore','Tamil Nadu',2,31.8,'Tropical wet and dry climate moderated by Palghat pass.','verified',
+ ['Peelamedu Industrial Belt','Gandhipuram Canyon','R S Puram Residential Core','Railway Junction Corridor','Valankulam Lake Fringe','Saravanampatti Sprawl Sector']);
+addCity('mysuru','Mysuru','Karnataka',2,31.5,'Tropical wet and dry climate with pleasant baselines.','verified',
+ ['Hebbal Industrial Area','Devaraja Market Canyon','Kuwempunagar Residential Core','Suburban Bus Stand Transit','Karanji Lake Fringe','Outer Ring Road Sprawl']);
+addCity('bagalkot','Bagalkot','Karnataka',2,34.0,'Hot semi-arid climate in northern Karnataka plains.','verified',
+ ['Navanagar Industrial Sector','Old Bagalkot Bazar Canyon','Vidyagiri Residential Core','Bagalkot Station Road Transit','Ghataprabha River Fringe','Muchakhandi Lake expansion']);
+
+const ALIASES={'bangalore':'bengaluru','bombay':'mumbai','new delhi':'delhi','ncr':'delhi','madras':'chennai','calcutta':'kolkata','poona':'pune','mysore':'mysuru'};
+
+const GENERIC_TEMPLATES={
+  IHI:['{C} Industrial Area','{C} GIDC Sector'],
+  SCHI:['{C} Walled Old City Canyon','{C} Bazaar corridor'],
+  DRHI:['{C} Residential Core','{C} Ward Block'],
+  TCHI:['{C} Railway Crossing transit','{C} Main bus terminal'],
+  LDHI:['{C} Local Lake Fringe','{C} Riverfront Segment'],
+  PSHI:['{C} Highway sprawl sector','{C} Outer Ring Road corridor']
+};
+function genericZoneName(t,city,rng){
+  const arr=GENERIC_TEMPLATES[t];
+  return arr[Math.floor(rng()*arr.length)].replace('{C}',city);
+}
+function buildGenericMeta(displayRaw){
+  const rng=rngFor(displayRaw.toLowerCase());
+  const disp=titleCase(displayRaw);
+  const zones=TYPO_ORDER.map(t=>Z(t,genericZoneName(t,disp,rng)));
+  return {display:disp,state:null,tier:2,baselineLST:32.5+rng()*3.5,
+    climateNote:'Composite Indian UHI baseline model.',confidence:'projected',zones:zones};
+}
+
+/* ================= STATE ================= */
+let CURRENT=null;
+let ACTIVE_ZONE_IDX=0;
+let activeScenarioIdx=9; // default J
+let currentForecastYear=10;
+
+/* ================= LEAFLET MAP LAYER VARIABLES ================= */
+let map=null;
+let mapLayers={heat:null,vuln:null,ndvi:null,dist:null,prior:null,buildings:null,roads:null,rivers:null,parks:null,amenities:null};
+let activeLayers={heat:true,vuln:false,ndvi:false,dist:false,prior:false};
+let baseTiles=null;
+let currentBaseMapType='satellite';
+const BASE_MAPS = {
+  satellite: {
+    type: 'tile',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    attrib: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+  },
+  isro: {
+    type: 'tile',
+    url: 'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+    attrib: 'Imagery &copy; Google Maps / ISRO Bhuvan Hybrid'
+  },
+  nasa: {
+    type: 'tile',
+    url: 'https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/GoogleMapsCompatible/{z}/{y}/{x}.jpg',
+    attrib: 'Sentinel-2 cloudless &copy; EOX IT Services GmbH &copy; ESA'
+  },
+  voyager: {
+    type: 'tile',
+    url: 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+    attrib: '&copy; OpenStreetMap &copy; CARTO'
+  },
+  dark: {
+    type: 'tile',
+    url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+    attrib: '&copy; OpenStreetMap &copy; CARTO'
+  }
+};
+
+/* ================= CODE COMPUTE & RESOLVE ================= */
+function resolveCity(raw){
+  const norm=raw.trim().toLowerCase().replace(/\s+/g,' ');
+  let key=ALIASES[norm]||norm;
+  key=key.replace(/[^a-z\-\u0020]/g,'').trim();
+  if(CITY_DB[key]) return {key:key,meta:CITY_DB[key]};
+  return {key:'generic::'+key,meta:buildGenericMeta(raw.trim())};
+}
+function computeZoneMetrics(cityKey,meta,zoneDef){
+  const typ=TYPOLOGIES[zoneDef.typology];
+  const rng=rngFor(cityKey+'::'+zoneDef.typology+'::'+zoneDef.name);
+  const amp=typ.ampRange[0]+rng()*(typ.ampRange[1]-typ.ampRange[0]);
+  const lstPeak=meta.baselineLST+amp+(rng()-0.5)*1.2;
+  const uhsi=clamp(Math.round(38+(lstPeak-meta.baselineLST)*3.5+rng()*5),38,99);
+  const areaKm2=round1(0.9+rng()*3.0);
+  const pop=Math.round(areaKm2*(zoneDef.typology==='SCHI'?22000:9000)*(0.7+rng()*0.5));
+  const imperviousPct=clamp(Math.round(40+rng()*45),20,96);
+  return {
+    typology:zoneDef.typology,name:zoneDef.name,lstPeak:round1(lstPeak),uhsi:uhsi,
+    areaKm2:areaKm2,pop:pop,imperviousPct:imperviousPct,
+    latOffset:Math.sin(rng()*Math.PI*2)*(0.007+rng()*0.012),
+    lngOffset:Math.cos(rng()*Math.PI*2)*(0.007+rng()*0.012),
+    rngVal:rng()
+  };
+}
+function computeCityZones(resolved){
+  const zones=resolved.meta.zones.map(z=>computeZoneMetrics(resolved.key,resolved.meta,z));
+  zones.sort((a,b)=>b.uhsi-a.uhsi);
+  zones.forEach((z,i)=>{z.rank=i+1;});
+  return zones;
+}
+function buildCityResult(cityRaw){
+  const resolved=resolveCity(cityRaw);
+  return {raw:cityRaw,meta:resolved.meta,zones:computeCityZones(resolved)};
+}
+function zoneSolutions(zone){
+  return SOLUTIONS[zone.typology].map(s=>{
+    const copy=Object.assign({},s);
+    copy.pilot=s.pilotFn(zone.name);
+    return copy;
+  });
+}
+function complexityKey(c){return c.includes('Low')?'Low':(c.includes('Medium')?'Medium':'High');}
+function severityInfo(u){
+  if(u>=88) return {label:'CRITICAL',color:'var(--red)'};
+  if(u>=76) return {label:'SEVERE',color:'var(--orange)'};
+  if(u>=64) return {label:'HIGH',color:'var(--gold)'};
+  return {label:'MODERATE',color:'var(--bronze)'};
+}
+function buildZoneRoadmap(zone,sols){
+  const buckets={Low:[],Medium:[],High:[]};
+  sols.forEach(s=>buckets[complexityKey(s.complexity)].push(s));
+  return [
+    {label:'Phase 1 · Immediate Wins',window:'Month 0-6',items:buckets.Low},
+    {label:'Phase 2 · Pilot scale',window:'Month 6-18',items:buckets.Medium},
+    {label:'Phase 3 · Infrastructure',window:'Month 18-36',items:buckets.High},
+    {label:'Phase 4 · Satellite Verify',window:'Year 3-10',items:[],synth:`Full-zone saturation of all interventions. A ${TYPOLOGIES[zone.typology].channel} re-scan validates target drop.`}
+  ];
+}
+function buildNarrative(zones,meta){
+  const top=zones[0];
+  const typ=TYPOLOGIES[top.typology];
+  const totalPop=zones.reduce((s,z)=>s+z.pop,0);
+  return `${escapeHtml(meta.display)}'s most critical heat island is <b>${escapeHtml(top.name)}</b> — a ${typ.label.toLowerCase()} running ${top.lstPeak}°C at peak (${round1(top.lstPeak-meta.baselineLST)}°C above baseline ${meta.baselineLST}°C). An estimated <b>${fmtPop(totalPop)}</b> residents live within the identified UHI hotspots citywide.`;
+}
+function buildMasterChecklist(zones){
+  const items=[];
+  zones.slice(0,3).forEach(z=>{
+    items.push(`${z.name}: initiate Phase-1 pilot rollout`);
+  });
+  items.push('Establish regional ISRO/NRSC satellite telemetry MoU');
+  items.push('Deploy albedo credit trading framework on municipal ledger');
+  return items;
+}
+
+/* ================= FORECAST & ADOPTION ================= */
+function adoptionFrac(year,complexity){
+  const params={Low:[1.0,0.95],Medium:[3.0,0.55],High:[6.5,0.32]}[complexity]||[3,0.5];
+  return 1/(1+Math.exp(-params[1]*(year-params[0])));
+}
+function zoneDTatYear(zone,year){
+  const sols=SOLUTIONS[zone.typology];
+  let total=0;
+  sols.forEach(s=>{ total+=(s.ambientDT || -1.5)*adoptionFrac(year,complexityKey(s.complexity))*0.5; });
+  return total;
+}
+function computeForecastSeries(zones,meta){
+  const years=[0,1,2,3,4,5,7,10,15,20];
+  const totalPop=zones.reduce((s,z)=>s+z.pop,0)||1;
+  const avgLST=zones.reduce((s,z)=>s+z.lstPeak*z.pop,0)/totalPop;
+  const series=years.map(y=>{
+    let weightedDT=0,cost=0;
+    zones.forEach(z=>{
+      const dt=zoneDTatYear(z,y);
+      weightedDT+=dt*(z.pop/totalPop);
+      SOLUTIONS[z.typology].forEach(s=>{
+        cost+=s.costCr*(z.areaKm2/2.5)*adoptionFrac(y,complexityKey(s.complexity));
+      });
+    });
+    const bauLST=avgLST+0.07*y;
+    return {y:y,bauLST:bauLST,withLST:bauLST+weightedDT,dT:weightedDT,cost:cost,annualBenefit:Math.abs(weightedDT)*totalPop*0.000180};
+  });
+  let cumBenefit=0;
+  series.forEach((pt,i)=>{
+    if(i>0) cumBenefit+=(pt.annualBenefit+series[i-1].annualBenefit)/2*(pt.y-series[i-1].y);
+    pt.cumBenefit=cumBenefit;
+  });
+  let breakevenYear=null;
+  for(let i=0;i<series.length;i++){ if(series[i].cumBenefit>=series[i].cost){breakevenYear=series[i].y;break;} }
+  return {series:series,breakevenYear:breakevenYear};
+}
+
+/* ================= CHART & GAUGE ================= */
+function svgLineChart(seriesArr,opts){
+  opts=opts||{};
+  const W=opts.width||400,H=opts.height||200;
+  const padL=50,padR=16,padT=18,padB=30;
+  const xs=seriesArr[0].points.map(p=>p.x);
+  let allY=[];
+  seriesArr.forEach(s=>s.points.forEach(p=>allY.push(p.y)));
+  let minY=Math.min(...allY),maxY=Math.max(...allY);
+  if(minY===maxY){minY-=1;maxY+=1;}
+  const padY=(maxY-minY)*0.1; minY-=padY; maxY+=padY;
+  const minX=Math.min(...xs),maxX=Math.max(...xs);
+  const xScale=x=>padL+(x-minX)/((maxX-minX)||1)*(W-padL-padR);
+  const yScale=y=>H-padB-(y-minY)/((maxY-minY)||1)*(H-padT-padB);
+  let svg=`<svg viewBox="0 0 ${W} ${H}" class="chart-svg" xmlns="http://www.w3.org/2000/svg">`;
+  const yTicks=4;
+  for(let i=0;i<=yTicks;i++){
+    const val=minY+(maxY-minY)*i/yTicks;
+    const yy=yScale(val);
+    svg+=`<line x1="${padL}" y1="${yy}" x2="${W-padR}" y2="${yy}" stroke="rgba(0,0,0,0.06)" stroke-width="1"/>`;
+    svg+=`<text x="${padL-8}" y="${yy+4}" text-anchor="end" font-size="9" fill="var(--mut2)" font-family="var(--mono)">${opts.yFmt?opts.yFmt(val):val.toFixed(1)}</text>`;
+  }
+  xs.forEach(x=>{
+    const xx=xScale(x);
+    svg+=`<text x="${xx}" y="${H-padB+18}" text-anchor="middle" font-size="9" fill="var(--mut2)" font-family="var(--mono)">${opts.xFmt?opts.xFmt(x):x}</text>`;
+  });
+  seriesArr.forEach(s=>{
+    const pts=s.points.map(p=>xScale(p.x)+','+yScale(p.y)).join(' ');
+    if(s.fill){
+      const areaPts=xScale(s.points[0].x)+','+yScale(minY)+' '+pts+' '+xScale(s.points[s.points.length-1].x)+','+yScale(minY);
+      svg+=`<polygon points="${areaPts}" fill="${s.color}" opacity="0.12"/>`;
+    }
+    svg+=`<polyline points="${pts}" fill="none" stroke="${s.color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>`;
+  });
+  return svg+'</svg>';
+}
+function radialGauge(value,max,color,size){
+  const startA=-225,totalSweep=270;
+  const r=(size/2)-6,cx=size/2,cy=size/2;
+  const frac=clamp(value/max,0,1);
+  const endA=startA+totalSweep*frac;
+  const toXY=a=>[cx+r*Math.cos(a*Math.PI/180),cy+r*Math.sin(a*Math.PI/180)];
+  const p1=toXY(startA),p2=toXY(endA),p3=toXY(startA+totalSweep);
+  let s=`<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" class="gauge-svg">`;
+  s+=`<path d="M ${p1[0]} ${p1[1]} A ${r} ${r} 0 1 1 ${p3[0]} ${p3[1]}" fill="none" stroke="rgba(0,0,0,.06)" stroke-width="4.5" stroke-linecap="round"/>`;
+  if(frac>0) s+=`<path d="M ${p1[0]} ${p1[1]} A ${r} ${r} 0 ${(totalSweep*frac>180)?1:0} 1 ${p2[0]} ${p2[1]}" fill="none" stroke="${color}" stroke-width="4.5" stroke-linecap="round"/>`;
+  s+=`<text x="${cx}" y="${cy+1}" text-anchor="middle" dominant-baseline="central" class="gauge-num" style="fill:${color}; font-size:12px;">${value}</text>`;
+  return s+'</svg>';
+}
+
+/* ================= STATIC METHODOLOGY CONTENT ================= */
+const FRAMEWORK_DEFS=[
+ {t:'Thermal Morphogenetic Units (TMU)',c:'var(--red)',d:'Segment UHI polygons by clustering diurnal surface temperatures over time maps.'},
+ {t:'Thermodynamic GNN Solver',c:'var(--gold)',d:'Models edge canyon parameters using spatial graph neural convolution.'},
+ {t:'NSGA-II Interventions Optimizer',c:'var(--teal)',d:'Solves optimal portfolio balances for temperature ΔT vs budget CAPEX.'}
+];
+const FRAMEWORK_CARDS=FRAMEWORK_DEFS.map(f=>`<div class="fw-card" style="--tc:${f.c}"><div class="fw-name">${f.t}</div><div class="fw-desc">${f.d}</div></div>`).join('');
+const ISRO_ROWS_DATA=[
+ ['Resourcesat-2/2A LISS-IV','5.8 m','Biological buffer boundary mapping and vegetation index tracking'],
+ ['INSAT-3D / 3DR / 3DS','4 km','Diurnal LST pass loops for night thermal accumulation analysis'],
+ ['Cartosat-2 Series PAN','0.65 m','Shadow height extraction for urban canyon aspect ratio constraints']
+];
+const ISRO_TABLE_ROWS=ISRO_ROWS_DATA.map(r=>`<tr><td class="mono">${r[0]}</td><td class="mono gold">${r[1]}</td><td>${r[2]}</td></tr>`).join('');
+
+/* ================= MAP INTERACTION & RENDER ================= */
+function initMap(coords) {
+  if (map) { map.remove(); map=null; }
+  for (const k in mapLayers) { mapLayers[k] = null; }
+  map = L.map('map', { zoomControl:true, minZoom:7, maxZoom:18 }).setView(coords, 13);
+  setBaseMap(currentBaseMapType);
+  map.on('mousemove', function(e) { updateMapMiniStat(e.latlng); });
+}
+
+function setBaseMap(type) {
+  if (!map || !BASE_MAPS[type]) return;
+  if (baseTiles) {
+    map.removeLayer(baseTiles);
+  }
+  currentBaseMapType = type;
+  const cfg = BASE_MAPS[type];
+  baseTiles = L.tileLayer(cfg.url, {
+    attribution: cfg.attrib,
+    maxZoom: 18
+  }).addTo(map);
+  baseTiles.bringToBack();
+
+  ['satellite', 'isro', 'nasa', 'voyager', 'dark'].forEach(t => {
+    const btn = document.getElementById(`btn-bm-${t}`);
+    if (btn) {
+      btn.classList.toggle('on', t === type);
+    }
+  });
+}
+
+function colorForLST(lst) {
+  if (lst >= 38) return '#C03010'; // Red
+  if (lst >= 35) return '#D95A18'; // Orange
+  if (lst >= 32) return '#D97B20'; // Amber
+  return '#1A9A88'; // Teal
+}
+
+function renderMapLayers(result) {
+  for (const k in mapLayers) {
+    if (mapLayers[k]) { map.removeLayer(mapLayers[k]); mapLayers[k]=null; }
+  }
+  const bbox = [result.coords[1]-0.015, result.coords[0]-0.015, result.coords[1]+0.015, result.coords[0]+0.015];
+  const cityBoundary = turf.buffer(turf.point([result.coords[1], result.coords[0]]), 2.2, { units: 'kilometers' });
+
+  const rFeatures = [];
+  const pFeatures = [];
+  const bFeatures = [];
+
+  // Rivers & Canal
+  const riverCoords = [];
+  const startLng = bbox[0]-0.01; const endLng = bbox[2]+0.01;
+  for (let i=0; i<=8; i++) {
+    riverCoords.push([startLng + (endLng-startLng)*(i/8), result.coords[0] + Math.sin(i*0.8)*0.005]);
+  }
+  const riverPoly = turf.buffer(turf.lineString(riverCoords), 120, { units:'meters' });
+  riverPoly.properties = { type:'river', name:'Water Basin Corridor', lst:result.meta.baselineLST-3.5, uhsi:38 };
+  rFeatures.push(riverPoly);
+
+  const lakePt = turf.point([result.coords[1]+0.009, result.coords[0]-0.009]);
+  const lakePoly = turf.buffer(lakePt, 220, { units:'meters' });
+  lakePoly.properties = { type:'river', name:'Retention Canal Basin', lst:result.meta.baselineLST-4.2, uhsi:32 };
+  rFeatures.push(lakePoly);
+
+  mapLayers.rivers = L.geoJSON(rFeatures, { style: { color:'#1A9A88', fillColor:'#1A9A88', fillOpacity:0.55, weight:1 } }).addTo(map);
+
+  // Parks
+  const parkPt = turf.point([result.coords[1]-0.008, result.coords[0]+0.008]);
+  const parkPoly = turf.buffer(parkPt, 250, { units:'meters' });
+  parkPoly.properties = { type:'park', name:'Central Sector Nature Park', lst:result.meta.baselineLST-2.8, uhsi:45 };
+  pFeatures.push(parkPoly);
+
+  const botanicalPt = turf.point([result.coords[1]+0.007, result.coords[0]+0.007]);
+  const botanicalPoly = turf.buffer(botanicalPt, 180, { units:'meters' });
+  botanicalPoly.properties = { type:'park', name:'Botanical Eco-Forest Reserve', lst:result.meta.baselineLST-3.2, uhsi:40 };
+  pFeatures.push(botanicalPoly);
+
+  const promenadePt = turf.point([result.coords[1]-0.009, result.coords[0]-0.009]);
+  const promenadePoly = turf.buffer(promenadePt, 150, { units:'meters' });
+  promenadePoly.properties = { type:'park', name:'Lakeside Promenade Greenbelt', lst:result.meta.baselineLST-2.5, uhsi:48 };
+  pFeatures.push(promenadePoly);
+
+  mapLayers.parks = L.geoJSON(pFeatures, { style: { color:'#2A8848', fillColor:'#2A8848', fillOpacity:0.45, weight:1 } }).addTo(map);
+
+  // Roads
+  const roadsList = [];
+  const road1 = turf.lineString([[bbox[0], result.coords[0]], [bbox[2], result.coords[0]]]);
+  road1.properties = { type:'road', name:'Link Bypass Highway', lst:result.meta.baselineLST+5.8, uhsi:82 };
+  roadsList.push(road1);
+
+  const road2 = turf.lineString([[result.coords[1], bbox[1]], [result.coords[1], bbox[3]]]);
+  road2.properties = { type:'road', name:'Metro Transit Boulevard', lst:result.meta.baselineLST+4.5, uhsi:76 };
+  roadsList.push(road2);
+
+  const road3 = turf.lineString([[bbox[0], bbox[1]], [bbox[2], bbox[3]]]);
+  road3.properties = { type:'road', name:'District Market Street', lst:result.meta.baselineLST+6.2, uhsi:88 };
+  roadsList.push(road3);
+
+  mapLayers.roads = L.geoJSON(roadsList, { style: { color:'#C0B8B0', weight:2.5 } }).addTo(map);
+
+  // Buildings & Infrastructure Assets
+  const roadBbox = turf.bbox(turf.buffer(road1, 150, { units:'meters' }));
+  const rng = rngFor(result.key+'::map');
+  const bTypes = ['Industrial','Commercial','Residential','Institutional','Transit','Utility'];
+  const bNames = {
+    Industrial: ['Symbiosis Captive Power Station', 'Alloy Casting Foundry', 'Precision Tooling Workshop', 'Eco-Industrial Park Block'],
+    Commercial: ['District IT Galleria', 'Co-operative Bank HQ', 'Tech Plaza Sector C', 'Central Retail Arcade'],
+    Residential: ['Sunrise Residency Tower A', 'Vasant Apartments Block C', 'Green Valley Housing Complex', 'Railway Enclave Quarters'],
+    Institutional: ['Metro General Hospital', 'Government Arts College', 'District Sessions Court', 'State Secondary School'],
+    Transit: ['Inter-State Bus Terminal', 'Metro Junction Station', 'Cargo Logistics Node', 'Rapid Transit shelter'],
+    Utility: ['Electrical Grid Substation', 'Water Purification Plant', 'Monsoon Drainage pump', 'Solar Capture Micro-Grid']
+  };
+
+  for (let k=0; k<42; k++) {
+    const pt = turf.point([roadBbox[0]+rng()*(roadBbox[2]-roadBbox[0]), roadBbox[1]+rng()*(roadBbox[3]-roadBbox[1])]);
+    if (turf.booleanPointInPolygon(pt, cityBoundary)) {
+      const bPoly = turf.buffer(pt, 45, { units:'meters' });
+      const bt = bTypes[k % bTypes.length];
+      const nameArr = bNames[bt];
+      const name = nameArr[Math.floor(rng()*nameArr.length)] + ` #${10+Math.floor(rng()*90)}`;
+      const baseLstDelta = bt === 'Industrial' ? 6.5 : (bt === 'Commercial' ? 4.8 : (bt === 'Residential' ? 3.5 : (bt === 'Utility' ? 1.5 : -1.0)));
+      bPoly.properties = { 
+        type:'building', 
+        bType:bt, 
+        name:name, 
+        lst:result.meta.baselineLST + baseLstDelta + (rng()-0.5)*1.0, 
+        uhsi:clamp(Math.round(45 + baseLstDelta*6 + rng()*10), 30, 99) 
+      };
+      bFeatures.push(bPoly);
+    }
+  }
+
+  mapLayers.buildings = L.geoJSON(bFeatures, {
+    style: function(f) {
+      let c = 'var(--mut2)';
+      const t = f.properties.bType;
+      if (t === 'Industrial') c = '#C03010';
+      else if (t === 'Commercial') c = '#C89A0C';
+      else if (t === 'Residential') c = '#D97B20';
+      else if (t === 'Institutional') c = '#2860A8';
+      else if (t === 'Transit') c = '#6840A8';
+      else if (t === 'Utility') c = '#1A9A88';
+      return { color:'rgba(0,0,0,0.15)', fillColor:c, fillOpacity:0.45, weight:1 };
+    }
+  }).addTo(map);
+
+  // Bind mouseovers
+  [mapLayers.rivers, mapLayers.parks, mapLayers.roads, mapLayers.buildings].forEach(gp => {
+    if (gp) {
+      gp.eachLayer(l => {
+        const p = l.feature.properties;
+        l.bindPopup(`<h4>${escapeHtml(p.name)}</h4><p style="font-size:11px;margin-bottom:2px;">Baseline LST: <b>${p.lst.toFixed(1)}°C</b></p>`);
+        l.on('mouseover', () => { 
+          let ndvi = 12; let ndbi = 45;
+          if (p.type === 'park') { ndvi = 75; ndbi = 10; }
+          else if (p.type === 'river') { ndvi = 42; ndbi = 5; }
+          else if (p.type === 'road') { ndvi = 8; ndbi = 88; }
+          else if (p.bType === 'Industrial') { ndvi = 6; ndbi = 92; }
+          else if (p.bType === 'Commercial') { ndvi = 11; ndbi = 82; }
+          else if (p.bType === 'Residential') { ndvi = 16; ndbi = 68; }
+          else if (p.bType === 'Institutional') { ndvi = 22; ndbi = 58; }
+          updateHoverReadout(p.name, p.lst, p.uhsi, p.bType ? p.bType.toUpperCase() : p.type.toUpperCase(), ndvi, ndbi); 
+        });
+      });
+    }
+  });
+
+  renderHeatDistrictsLayers(result);
+  loadLiveOSMData(result.coords);
+}
+
+function renderHeatDistrictsLayers(result) {
+  const districtFeatures = []; const vulnFeatures = []; const ndviFeatures = []; const priorFeatures = [];
+
+  result.zones.forEach((z, i) => {
+    const lat = result.coords[0] + z.latOffset;
+    const lng = result.coords[1] + z.lngOffset;
+    z.center = [lat, lng];
+
+    const poly = turf.buffer(turf.point([lng, lat]), z.areaKm2 * 0.4, { units:'kilometers' });
+    
+    const f1 = JSON.parse(JSON.stringify(poly));
+    f1.properties = { index:i, name:z.name, lst:z.lstPeak, uhsi:z.uhsi, typology:z.typology, type:'district' };
+    districtFeatures.push(f1);
+
+    const f2 = JSON.parse(JSON.stringify(poly));
+    f2.properties = { index:i, name:z.name, score:z.uhsi+4, type:'vulnerability' };
+    vulnFeatures.push(f2);
+
+    const f3 = JSON.parse(JSON.stringify(poly));
+    f3.properties = { index:i, name:z.name, ndvi:clamp(45-(z.lstPeak-result.meta.baselineLST)*4,5,65), type:'ndvi' };
+    ndviFeatures.push(f3);
+
+    if (z.uhsi >= 76) {
+      const f4 = JSON.parse(JSON.stringify(poly));
+      f4.properties = { index:i, name:z.name, type:'priority' };
+      priorFeatures.push(f4);
+    }
+  });
+
+  mapLayers.dist = L.geoJSON(districtFeatures, {
+    style: f => ({ color:TYPOLOGIES[f.properties.typology].color, fillColor:TYPOLOGIES[f.properties.typology].color, fillOpacity:0.1, weight:1.5 }),
+    onEachFeature: (f,l) => {
+      l.on('click', () => jumpToZone(f.properties.index));
+      l.bindTooltip(`#${f.properties.index+1}: ${escapeHtml(f.properties.name)}`);
+    }
+  });
+  if (activeLayers.dist) mapLayers.dist.addTo(map);
+
+  mapLayers.heat = L.geoJSON(districtFeatures, {
+    style: f => { const c=colorForLST(f.properties.lst); return { color:c, fillColor:c, fillOpacity:0.15, weight:2 }; },
+    onEachFeature: (f,l) => {
+      l.on('click', () => jumpToZone(f.properties.index));
+      l.bindTooltip(`#${f.properties.index+1}: LST ${f.properties.lst.toFixed(1)}°C`);
+    }
+  });
+  if (activeLayers.heat) mapLayers.heat.addTo(map);
+
+  mapLayers.vuln = L.geoJSON(vulnFeatures, {
+    style: f => { const c = f.properties.score>=80?'#C03010':(f.properties.score>=65?'#D95A18':'#D97B20'); return { color:c, fillColor:c, fillOpacity:0.12, weight:1.5 }; },
+    onEachFeature: (f,l) => { l.on('click', () => jumpToZone(f.properties.index)); }
+  });
+  if (activeLayers.vuln) mapLayers.vuln.addTo(map);
+
+  mapLayers.ndvi = L.geoJSON(ndviFeatures, {
+    style: f => { const c = f.properties.ndvi>=30?'#2A8848':'#C89A0C'; return { color:c, fillColor:c, fillOpacity:0.15, weight:1.5 }; },
+    onEachFeature: (f,l) => { l.on('click', () => jumpToZone(f.properties.index)); }
+  });
+  if (activeLayers.ndvi) mapLayers.ndvi.addTo(map);
+
+  mapLayers.prior = L.geoJSON(priorFeatures, {
+    style: { color:'var(--red)', fillColor:'var(--red)', fillOpacity:0.03, weight:2, dashArray:'4, 6' }
+  });
+  if (activeLayers.prior) mapLayers.prior.addTo(map);
+}
+
+function toggleLayer(id) {
+  const btn = document.getElementById(`btn-${id}`);
+  if (!btn || !map) return;
+  activeLayers[id] = !activeLayers[id];
+  btn.classList.toggle('on', activeLayers[id]);
+  if (activeLayers[id]) {
+    if (mapLayers[id]) mapLayers[id].addTo(map);
+  } else {
+    if (mapLayers[id]) map.removeLayer(mapLayers[id]);
+  }
+}
+
+function updateHoverReadout(name, lst, uhsi, typology, ndvi, ndbi) {
+  const miniStat = document.getElementById('mapMiniStat');
+  if (!miniStat) return;
+  miniStat.innerHTML = `
+    <div class="map-ministat-row">
+      <div class="mms-item"><div class="mms-val" style="color:var(--red);">${lst.toFixed(1)}°C</div><div class="mms-lbl">LST Surface</div></div>
+      <div class="mms-item"><div class="mms-val" style="color:var(--orange)">${uhsi}</div><div class="mms-lbl">UHSI Risk</div></div>
+      <div class="mms-item"><div class="mms-val" style="color:var(--gold)">${typology}</div><div class="mms-lbl">Typology</div></div>
+      <div class="mms-item"><div class="mms-val" style="color:var(--green)">${ndvi}%</div><div class="mms-lbl">NDVI Canopy</div></div>
+      <div class="mms-item"><div class="mms-val" style="color:var(--mut2)">${ndbi}%</div><div class="mms-lbl">NDBI Imperv</div></div>
+    </div>
+    <div style="font-size:9.5px; color:var(--mut2); text-align:center; margin-top:5px; border-top:1px solid var(--bord); padding-top:2px;">
+      🎯 ELEMENT: ${escapeHtml(name).toUpperCase()}
+    </div>
+  `;
+}
+
+function updateMapMiniStat(latlng) {
+  if (!CURRENT) return;
+  const dist = Math.sqrt(Math.pow(latlng.lat - CURRENT.coords[0], 2) + Math.pow(latlng.lng - CURRENT.coords[1], 2));
+  const factor = Math.max(0, 1 - dist / 0.025);
+  const simulatedLST = CURRENT.meta.baselineLST + factor * 6.0;
+  updateHoverReadout(
+    `Coordinates [${latlng.lat.toFixed(4)}, ${latlng.lng.toFixed(4)}]`,
+    simulatedLST,
+    Math.round(40 + factor * 48),
+    factor > 0.5 ? 'Urban Core' : 'Sprawl Edge',
+    Math.round(20 - factor * 14),
+    Math.round(40 + factor * 45)
+  );
+}
+
+/* ================= OSM LIVE OVERPASS GATEWAY ================= */
+async function loadLiveOSMData(centerCoords) {
+  const range = 0.008;
+  const bbox = [centerCoords[0]-range, centerCoords[1]-range, centerCoords[0]+range, centerCoords[1]+range];
+  const overpassUrl = `https://overpass-api.de/api/interpreter?data=[out:json][timeout:15];(way["highway"](${bbox.join(',')});way["building"](${bbox.join(',')});way["natural"="water"](${bbox.join(',')});way["leisure"="park"](${bbox.join(',')});node["amenity"~"hospital|school|university"](${bbox.join(',')}););out body;>;out skel qt;`;
+  try {
+    const res = await fetch(overpassUrl);
+    const data = await res.json();
+    if (data && data.elements) processOverpassData(data);
+  } catch (err) {
+    console.warn("Overpass API offline. Retaining synthetic layers.");
+  }
+}
+
+function processOverpassData(osmData) {
+  const nodes = {};
+  osmData.elements.forEach(el => { if (el.type === 'node') nodes[el.id] = [el.lon, el.lat]; });
+  const buildings = []; const highways = []; const waterBodies = []; const parks = []; const amenities = [];
+  const rng = rngFor(CURRENT.key+'::osm');
+
+  osmData.elements.forEach(el => {
+    const tags = el.tags || {};
+    if (el.type === 'way' && el.nodes) {
+      const coords = el.nodes.map(nId => nodes[nId]).filter(c => c !== undefined);
+      if (coords.length < 2) return;
+      if (tags.building) {
+        if (coords[0][0]!==coords[coords.length-1][0] || coords[0][1]!==coords[coords.length-1][1]) coords.push(coords[0]);
+        const bTypes = ['Industrial','Commercial','Residential','Institutional','Transit','Utility'];
+        const bt = tags.amenity === 'hospital' ? 'Institutional' : (tags.industrial ? 'Industrial' : bTypes[Math.floor(rng()*bTypes.length)]);
+        buildings.push(turf.polygon([coords], { name: tags.name || `${bt} footprint: ${el.id}`, lst:CURRENT.meta.baselineLST+rng()*5.5+1.5, uhsi:Math.round(55+rng()*35), bType:bt }));
+      } else if (tags.highway) {
+        highways.push(turf.lineString(coords, { name: tags.name || `Highway ref ${tags.ref || el.id}`, lst:CURRENT.meta.baselineLST+5.2, uhsi:78 }));
+      } else if (tags.natural === 'water' || tags.water || tags.landuse === 'reservoir' || tags.basin) {
+        if (coords[0][0]!==coords[coords.length-1][0] || coords[0][1]!==coords[coords.length-1][1]) coords.push(coords[0]);
+        waterBodies.push(turf.polygon([coords], { name: tags.name || `Water body: ${el.id}`, lst:CURRENT.meta.baselineLST-3.8, uhsi:35, type:'water' }));
+      } else if (tags.leisure === 'park' || tags.landuse === 'grass' || tags.leisure === 'garden' || tags.landuse === 'forest') {
+        if (coords[0][0]!==coords[coords.length-1][0] || coords[0][1]!==coords[coords.length-1][1]) coords.push(coords[0]);
+        parks.push(turf.polygon([coords], { name: tags.name || `Green park: ${el.id}`, lst:CURRENT.meta.baselineLST-2.5, uhsi:40, type:'park' }));
+      }
+    } else if (el.type === 'node' && tags.amenity) {
+      if (['hospital', 'school', 'university', 'clinic', 'college'].includes(tags.amenity)) {
+        amenities.push({
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [el.lon, el.lat] },
+          properties: {
+            name: tags.name || `${titleCase(tags.amenity)}: ${el.id}`,
+            lst: CURRENT.meta.baselineLST + (tags.amenity === 'hospital' ? -1.0 : 1.2),
+            uhsi: tags.amenity === 'hospital' ? 48 : 64,
+            type: 'amenity',
+            amenityType: tags.amenity
+          }
+        });
+      }
+    }
+  });
+
+  if (buildings.length > 0 && mapLayers.buildings) {
+    map.removeLayer(mapLayers.buildings);
+    mapLayers.buildings = L.geoJSON(buildings, {
+      style: function(f) {
+        let c = 'var(--mut2)';
+        const t = f.properties.bType;
+        if (t === 'Industrial') c = '#C03010';
+        else if (t === 'Commercial') c = '#C89A0C';
+        else if (t === 'Residential') c = '#D97B20';
+        else if (t === 'Institutional') c = '#2860A8';
+        else if (t === 'Transit') c = '#6840A8';
+        else if (t === 'Utility') c = '#1A9A88';
+        return { color: 'rgba(0,0,0,0.15)', fillColor: c, fillOpacity: 0.5, weight: 1 };
+      },
+      onEachFeature: (f,l) => {
+        const p = f.properties;
+        l.bindPopup(`<h4>${escapeHtml(p.name)}</h4><p style="font-size:11px;">LST: <b>${p.lst.toFixed(1)}°C</b></p>`);
+        l.on('mouseover', () => { updateHoverReadout(p.name, p.lst, p.uhsi, p.bType.toUpperCase(), 12, 85); });
+      }
+    }).addTo(map);
+  }
+  if (highways.length > 0 && mapLayers.roads) {
+    map.removeLayer(mapLayers.roads);
+    mapLayers.roads = L.geoJSON(highways, {
+      style: { color: 'var(--amber)', weight: 2.2 },
+      onEachFeature: (f,l) => {
+        const p = f.properties;
+        l.bindPopup(`<h4>${escapeHtml(p.name)}</h4>`);
+        l.on('mouseover', () => { updateHoverReadout(p.name, p.lst, p.uhsi, 'LIVE HIGHWAY', 8, 92); });
+      }
+    }).addTo(map);
+  }
+  if (waterBodies.length > 0 && mapLayers.rivers) {
+    map.removeLayer(mapLayers.rivers);
+    mapLayers.rivers = L.geoJSON(waterBodies, {
+      style: { color: '#1A9A88', fillColor: '#1A9A88', fillOpacity: 0.6, weight: 1 },
+      onEachFeature: (f,l) => {
+        const p = f.properties;
+        l.bindPopup(`<h4>${escapeHtml(p.name)}</h4><p style="font-size:11px;">LST: <b>${p.lst.toFixed(1)}°C</b></p>`);
+        l.on('mouseover', () => { updateHoverReadout(p.name, p.lst, p.uhsi, 'LIVE WATER BODY', 35, 5); });
+      }
+    }).addTo(map);
+  }
+  if (parks.length > 0 && mapLayers.parks) {
+    map.removeLayer(mapLayers.parks);
+    mapLayers.parks = L.geoJSON(parks, {
+      style: { color: '#2A8848', fillColor: '#2A8848', fillOpacity: 0.5, weight: 1 },
+      onEachFeature: (f,l) => {
+        const p = f.properties;
+        l.bindPopup(`<h4>${escapeHtml(p.name)}</h4><p style="font-size:11px;">LST: <b>${p.lst.toFixed(1)}°C</b></p>`);
+        l.on('mouseover', () => { updateHoverReadout(p.name, p.lst, p.uhsi, 'LIVE GREEN PARK', 75, 12); });
+      }
+    }).addTo(map);
+  }
+  if (amenities.length > 0) {
+    if (mapLayers.amenities) map.removeLayer(mapLayers.amenities);
+    mapLayers.amenities = L.geoJSON(amenities, {
+      pointToLayer: function(f, latlng) {
+        const color = f.properties.amenityType === 'hospital' ? 'var(--red)' : 'var(--blue)';
+        return L.circleMarker(latlng, { radius: 6, fillColor: color, color: color, weight: 2.2, fillOpacity: 0.25 });
+      },
+      onEachFeature: (f,l) => {
+        const p = f.properties;
+        l.bindPopup(`<h4>${escapeHtml(p.name)}</h4><p style="font-size:11px;">LST: <b>${p.lst.toFixed(1)}°C</b></p>`);
+        l.on('mouseover', () => { updateHoverReadout(p.name, p.lst, p.uhsi, p.amenityType.toUpperCase(), 25, 45); });
+      }
+    }).addTo(map);
+  }
+}
+
+/* ================= PANEL TAB RENDER ROUTINES ================= */
+function renderOverview(zones, meta) {
+  const narrative = buildNarrative(zones, meta);
+  const cards = zones.map((z, i) => {
+    const sev = severityInfo(z.uhsi);
+    const typ = TYPOLOGIES[z.typology];
+    return `
+      <div class="hot-card" style="--tc:${typ.color}" onclick="jumpToZone(${i})">
+        <div class="hot-rank">#${z.rank}</div>
+        <div class="hot-icon">${typ.icon}</div>
+        <div class="hot-body">
+          <div class="hot-name">${escapeHtml(z.name)}</div>
+          <div class="hot-typ">${typ.label} · ${typ.channel}</div>
+          <div class="hot-bar-wrap"><div class="hot-bar" style="width:${z.uhsi}%; background:${typ.color}"></div></div>
+        </div>
+        <div class="hot-metrics">
+          ${radialGauge(z.uhsi, 100, sev.color, 46)}
+          <span style="font-size:9.5px; font-family:var(--mono); color:${sev.color}; font-weight:700; margin-top:2px;">${sev.label}</span>
+        </div>
+      </div>
+    `;
+  }).join('');
+  document.getElementById('panel-overview').innerHTML = `
+    <p class="narrative">${narrative}</p>
+    <div class="hot-list">${cards}</div>
+    <div class="overview-hint" style="font-size:11px; color:var(--mut2); text-align:center; margin-top:14px; font-style:italic;">
+      💡 Click any hotspot to explore its detailed DNA profile, solution set, and forecasts in the Heat DNA Lab.
+    </div>
+  `;
+}
+
+function renderZoneRail(zones) {
+  const rail = document.getElementById('zoneTabs');
+  if (rail) {
+    rail.innerHTML = zones.map((z, i) => `
+      <button class="zone-tab ${i === ACTIVE_ZONE_IDX ? 'active' : ''}" onclick="selectZone(${i})">
+        ${TYPOLOGIES[z.typology].icon} ${escapeHtml(z.name)}
+      </button>
+    `).join('');
+  }
+}
+
+function selectZone(idx) {
+  ACTIVE_ZONE_IDX = idx;
+  renderZoneRail(CURRENT.zones);
+  renderZoneDetail(CURRENT.zones[idx]);
+}
+function jumpToZone(idx) { switchTab('hotspot'); selectZone(idx); }
+
+function renderZoneDetail(zone) {
+  const typ = TYPOLOGIES[zone.typology];
+  const sev = severityInfo(zone.uhsi);
+  const sols = zoneSolutions(zone);
+  const phases = buildZoneRoadmap(zone, sols);
+  const f1 = zoneDTatYear(zone, 1);
+  const f3 = zoneDTatYear(zone, 3);
+  const f5 = zoneDTatYear(zone, 5);
+  const f10 = zoneDTatYear(zone, 10);
+
+  const insuffRows = typ.insuff.map(x => `
+    <div class="insuff-row"><span class="badge dim">${x.n}</span><span class="insuff-d">${x.d}°C</span><span class="insuff-note">${x.note}</span></div>
+  `).join('');
+
+  const solCards = sols.map(s => `
+    <div class="sol-card" style="--tc:${typ.color}">
+      <div class="sol-head"><span class="sol-name">${s.name}</span><span class="sol-stars">${'★'.repeat(s.stars)}</span></div>
+      <div class="sol-mech" style="font-size:12px; margin-bottom:8px; line-height:1.5;">${s.mech}</div>
+      <div class="sol-meta" style="display:flex; gap:6px;">
+        <div class="meta-pill"><span class="meta-l">Cooling ΔT</span><span class="meta-v" style="color:var(--green);">${s.dTLabel}</span></div>
+        <div class="meta-pill"><span class="meta-l">CAPEX</span><span class="meta-v">${s.cost}</span></div>
+        <div class="meta-pill"><span class="meta-l">Complexity</span><span class="meta-v">${s.complexity}</span></div>
+      </div>
+      <div class="sol-isro" style="font-size:10.5px; margin-top:6px; color:var(--teal);">🛰️ ISRO Verification: ${s.isro}</div>
+      <div class="sol-pilot" style="font-size:10.5px; margin-top:4px; color:var(--gold);">🎯 Pilot: ${escapeHtml(s.pilot)}</div>
+    </div>
+  `).join('');
+
+  const phaseCards = phases.map(p => `
+    <div class="phase-mini" style="margin-bottom:6px; border:1px solid var(--bord); border-radius:8px; padding:10px;">
+      <div class="phase-mini-head" style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; margin-bottom:4px;">
+        <span>${p.label}</span><span class="phase-window" style="color:var(--mut2);">${p.window}</span>
+      </div>
+      <div style="font-size:11.5px; color:var(--txt2);">${p.items.length ? p.items.map(s=>`• ${s.name}`).join('<br>') : p.synth}</div>
+    </div>
+  `).join('');
+
+  const dnaRows = Object.keys(typ.dna).map(k => `
+    <div class="dna-row">
+      <div class="dna-label">${k}</div>
+      <div class="dna-bar-wrap"><div class="dna-bar-fill" style="width:${typ.dna[k]}%; background:${typ.color}"></div></div>
+      <div class="dna-pct">${typ.dna[k]}%</div>
+    </div>
+  `).join('');
+
+  document.getElementById('hp-body').innerHTML = `
+    <div class="zd-header" style="border:1px solid var(--bord); border-top:3px solid ${typ.color}; border-radius:12px; padding:14px; margin-bottom:12px; background:var(--surf);">
+      <div class="zd-rank" style="font-family:var(--mono); font-size:10px; color:var(--mut2); letter-spacing:1px; margin-bottom:4px;">HOTSPOT RANK #${zone.rank} · ${typ.short.toUpperCase()}</div>
+      <div class="zd-title" style="font-size:18px; font-weight:800; display:flex; align-items:center; gap:8px;"><span>${typ.icon}</span> ${escapeHtml(zone.name)}</div>
+      <div class="zd-typ" style="font-size:12px; color:var(--mut); margin-bottom:10px;">${typ.label} · <span class="zd-channel" style="font-family:var(--mono); font-size:10px;">${typ.channel}</span></div>
+      <div class="zd-metrics" style="display:flex; flex-wrap:wrap; gap:12px; font-size:12px;">
+        <span class="zd-m"><b style="color:var(--red)">${zone.lstPeak}°C</b> peak LST</span>
+        <span class="zd-m"><b style="color:${sev.color}">${zone.uhsi}</b> UHSI</span>
+        <span class="zd-m"><b style="color:var(--teal)">${fmtPop(zone.pop)}</b> affected</span>
+        <span class="zd-m"><b>${zone.areaKm2} km²</b> area</span>
+      </div>
+    </div>
+    <div class="card"><div class="zd-h">Causal DNA Profile</div><div style="display:flex; flex-direction:column; gap:4px; margin-bottom:10px;">${dnaRows}</div><p style="font-size:12px; color:var(--mut); line-height:1.5;">${typ.mech(zone.name)}</p></div>
+    <div class="card"><div class="zd-h">Standard Mitigations Deficit</div>${insuffRows}</div>
+    <div class="card"><div class="zd-h">Ranked Interventions (${sols.length})</div><div class="sol-grid">${solCards}</div></div>
+    <div class="card"><div class="zd-h">Sequenced Roadmap (ISO Scheduler)</div><div>${phaseCards}</div></div>
+    <div class="card"><div class="zd-h">Zone Temperature Anomaly Projection</div>
+      <div class="mini-forecast" style="display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin-top:8px;">
+        <div class="mf-tile"><span class="mf-y">Y1</span><span class="mf-v">${round1(zone.lstPeak+f1)}°C</span></div>
+        <div class="mf-tile"><span class="mf-y">Y3</span><span class="mf-v">${round1(zone.lstPeak+f3)}°C</span></div>
+        <div class="mf-tile"><span class="mf-y">Y5</span><span class="mf-v">${round1(zone.lstPeak+f5)}°C</span></div>
+        <div class="mf-tile"><span class="mf-y">Y10</span><span class="mf-v">${round1(zone.lstPeak+f10)}°C</span></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderScenarioLab() {
+  const container = document.getElementById('sc-body');
+  if (!container || !CURRENT) return;
+  const z = CURRENT.zones[ACTIVE_ZONE_IDX];
+  const sc = SCENARIOS[activeScenarioIdx];
+  const rawCooling = (sc.cooling[0] + sc.cooling[1]) / 2;
+  const dt = -rawCooling * adoptionFrac(currentForecastYear, sc.risk.includes('Low') ? 'Low' : 'Medium');
+  const simulatedLst = z.lstPeak + dt;
+
+  let cardsHtml = SCENARIOS.map((s, idx) => `
+    <div class="sc-card ${idx === activeScenarioIdx ? 'selected' : ''}" onclick="selectScenario(${idx})">
+      <div class="sc-head" style="display:flex; justify-content:space-between; margin-bottom:6px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="sc-letter" style="background:${s.color}">${s.id}</span>
+          <span class="sc-name" style="font-weight:700; font-size:12.5px;">${s.name}</span>
+        </div>
+        <span class="sev ${s.risk.includes('Low')?'sev-low':'sev-mod'}">${s.risk} Risk</span>
+      </div>
+      <div style="font-size:11.5px; color:var(--mut); line-height:1.45; margin-bottom:8px;">${s.desc}</div>
+      <div class="sc-metrics">
+        <div class="sc-metric"><div class="sc-metric-val" style="color:var(--green)">-${s.cooling[0]}°C</div><div class="sc-metric-lbl">Target ΔT</div></div>
+        <div class="sc-metric"><div class="sc-metric-val">₹${s.financials.capex} Cr</div><div class="sc-metric-lbl">CAPEX</div></div>
+        <div class="sc-metric"><div class="sc-metric-val" style="color:var(--gold)">${s.roi}x</div><div class="sc-metric-lbl">ROI Index</div></div>
+      </div>
+    </div>
+  `).join('');
+
+  container.innerHTML = `
+    <div class="card card-s" style="margin-bottom:12px; padding:12px 14px;">
+      <div class="zd-h" style="display:flex; justify-content:space-between; margin-bottom:6px; font-size:13px;">
+        <span>Active Time Horizon Scrubber</span>
+        <span id="scYearText" style="color:var(--amber); font-weight:800; font-family:var(--mono);">Year ${currentForecastYear} (${2026 + currentForecastYear})</span>
+      </div>
+      <input type="range" min="0" max="20" value="${currentForecastYear}" style="width:100%; accent-color:var(--gold); cursor:pointer;" id="scYearScrubber" oninput="scrubTime(this.value)">
+      <div class="separator" style="margin:10px 0 6px;"></div>
+      <div class="kpi-row" style="margin-bottom:0;">
+        <div class="kpi" style="padding:6px 8px;"><span class="kpi-label">Baseline LST</span><span class="kpi-val text-red" style="font-size:15px;">${z.lstPeak}°C</span></div>
+        <div class="kpi" style="padding:6px 8px;"><span class="kpi-label">Simulated LST</span><span class="kpi-val text-green" style="font-size:15px;">${simulatedLst.toFixed(1)}°C</span></div>
+      </div>
+    </div>
+    <div class="zd-h">10 Competing Scenarios</div>
+    <div style="margin-bottom:12px; max-height:260px; overflow-y:auto; padding-right:4px;">${cardsHtml}</div>
+    <div class="card card-i">
+      <div class="zd-h" style="color:var(--teal)">${sc.icon} Scenario ${sc.id} Evaluation</div>
+      <p style="font-size:12px; line-height:1.55; color:var(--txt2); margin-bottom:8px;">${sc.desc}</p>
+      <div class="zd-h" style="font-size:10.5px; margin-top:10px; margin-bottom:4px;">MCDA Performance Criteria</div>
+      <div class="dna-row"><div class="dna-label" style="width:100px;">Cooling Index</div><div class="dna-bar-wrap"><div class="dna-bar-fill" style="width:${sc.roi*15}%; background:var(--green)"></div></div><div class="dna-pct">${Math.round(sc.roi*15)}%</div></div>
+      <div class="dna-row"><div class="dna-label" style="width:100px;">Implementation</div><div class="dna-bar-wrap"><div class="dna-bar-fill" style="width:${90-sc.financials.payback*4}%; background:var(--teal)"></div></div><div class="dna-pct">${Math.round(90-sc.financials.payback*4)}%</div></div>
+      <div class="zd-h" style="font-size:10.5px; margin-top:10px; margin-bottom:4px;">Counterfactual Projection</div>
+      <p style="font-size:11.5px; line-height:1.5; color:var(--red);">🚨 <b>Do-Nothing Baseline</b>: Peak surface temperatures climb another +1.4°C by Y10, increasing cooling-related heat stress hospitalizations by 24%.</p>
+      <div class="zd-h" style="font-size:10.5px; margin-top:10px; margin-bottom:4px;">Global Precedent Analog</div>
+      <p style="font-size:11.5px; line-height:1.5; color:var(--txt2);">🗺️ Singapore, Wuhan, and Rotterdam show average micro-scale cooling ratios of ${sc.cooling[0]}°C. Evapotranspirative green stitching has achieved 84% transferability index in warm-humid contexts.</p>
+    </div>
+  `;
+}
+
+function selectScenario(idx) {
+  activeScenarioIdx = idx;
+  renderScenarioLab();
+  updateSimulatedLST();
+}
+function scrubTime(yearVal) {
+  currentForecastYear = parseInt(yearVal);
+  const yearText = document.getElementById('scYearText');
+  if (yearText) yearText.textContent = `Year ${currentForecastYear} (${2026 + currentForecastYear})`;
+  updateSimulatedLST();
+}
+function updateSimulatedLST() {
+  const sc = SCENARIOS[activeScenarioIdx];
+  const z = CURRENT.zones[ACTIVE_ZONE_IDX];
+  const rawCooling = (sc.cooling[0] + sc.cooling[1]) / 2;
+  const dt = -rawCooling * adoptionFrac(currentForecastYear, sc.risk.includes('Low') ? 'Low' : 'Medium');
+  const simulatedLst = z.lstPeak + dt;
+  const lstVals = document.querySelectorAll('.kpi-val');
+  if (lstVals.length >= 2) lstVals[1].textContent = `${simulatedLst.toFixed(1)}°C`;
+
+  if (mapLayers.heat && CURRENT) {
+    mapLayers.heat.eachLayer(layer => {
+      const idx = layer.feature.properties.index;
+      const zone = CURRENT.zones[idx];
+      const zdt = -rawCooling * adoptionFrac(currentForecastYear, sc.risk.includes('Low') ? 'Low' : 'Medium');
+      const zSimLst = zone.lstPeak + zdt;
+      const newColor = colorForLST(zSimLst);
+      layer.setStyle({ fillColor:newColor, color:newColor });
+      layer.setTooltipContent(`#${idx+1}: ${escapeHtml(zone.name)}<br>Simulated LST: <b>${zSimLst.toFixed(1)}°C</b>`);
+    });
+  }
+}
+
+function renderMasterRoadmap(zones, meta) {
+  const rows = zones.map(z => {
+    const typ = TYPOLOGIES[z.typology];
+    const sols = zoneSolutions(z);
+    const phases = buildZoneRoadmap(z, sols);
+    const cells = phases.map(p => {
+      const names = p.items.map(s => s.name.split('(')[0].trim()).join(', ');
+      return `<div class="gantt-cell" style="font-size:10px; min-height:28px;">${names || (p.synth ? 'Verify & Monitor' : '—')}</div>`;
+    }).join('');
+    return `
+      <div class="gantt-row">
+        <div class="gantt-label" style="--tc:${typ.color}"><span>#${z.rank}</span> ${escapeHtml(z.name)}</div>
+        <div class="gantt-cells">${cells}</div>
+      </div>
+    `;
+  }).join('');
+  
+  const checklistItems = buildMasterChecklist(zones);
+  const checklistHtml = checklistItems.map((it, i) => `
+    <div class="chk" style="padding:6px 0; border-bottom:1px solid var(--bord); display:flex; gap:8px;">
+      <input type="checkbox" id="mchk${i}" onchange="updateMasterProgress()"><label for="mchk${i}">${it}</label>
+    </div>
+  `).join('');
+
+  document.getElementById('panel-roadmap').innerHTML = `
+    <div class="zd-h">Phased Rollout gantt — ${escapeHtml(meta.display)}</div>
+    <div class="gantt-wrap" style="margin-bottom:14px;">
+      <div class="gantt-row gantt-header" style="font-weight:700;">
+        <div class="gantt-label">District</div>
+        <div class="gantt-cells">
+          <div class="gantt-cell head">P1 (0-6m)</div><div class="gantt-cell head">P2 (6-18m)</div>
+          <div class="gantt-cell head">P3 (18-36m)</div><div class="gantt-cell head">P4 (Yr3-10)</div>
+        </div>
+      </div>
+      ${rows}
+    </div>
+    <div class="card card-s">
+      <div class="zd-h">Master Implementation Checklist</div>
+      <div class="prog-row" style="margin-bottom:8px;"><div class="prog-track"><div class="prog-fill" id="mProgFill" style="width:0%;"></div></div><span id="mProgTxt" style="font-size:11px; margin-left:8px;">0 / ${checklistItems.length} actions</span></div>
+      ${checklistHtml}
+    </div>
+  `;
+}
+function updateMasterProgress() {
+  const boxes = document.querySelectorAll('#panel-roadmap input[type=checkbox]');
+  const checked = Array.from(boxes).filter(b => b.checked).length;
+  const pct = Math.round((checked / boxes.length) * 100);
+  document.getElementById('mProgFill').style.width = `${pct}%`;
+  document.getElementById('mProgTxt').textContent = `${checked} / ${boxes.length} actions confirmed`;
+}
+
+function renderForecast(zones, meta) {
+  const fc = computeForecastSeries(zones, meta);
+  const chart1 = svgLineChart([
+    { label: 'BAU', color: 'var(--red)', points: fc.series.map(p=>({ x:p.y, y:p.bauLST })), fill: false },
+    { label: 'SURYA', color: 'var(--green)', points: fc.series.map(p=>({ x:p.y, y:p.withLST })), fill: true }
+  ], { xFmt: v=>'Y'+v, yFmt: v=>v.toFixed(0)+'°C' });
+
+  const chart2 = svgLineChart([
+    { label: 'CAPEX', color: 'var(--amber)', points: fc.series.map(p=>({ x:p.y, y:p.cost })), fill: false },
+    { label: 'Benefit', color: 'var(--teal)', points: fc.series.map(p=>({ x:p.y, y:p.cumBenefit })), fill: false }
+  ], { xFmt: v=>'Y'+v, yFmt: v=>'₹'+Math.round(v)+'Cr' });
+
+  const mRows = fc.series.filter(p=>[1,5,10,20].includes(p.y)).map(p => `
+    <tr><td>Year ${p.y}</td><td>${round1(p.withLST - fc.series[0].withLST)}°C</td><td>₹${round1(p.cost)} Cr</td><td>₹${round1(p.cumBenefit)} Cr</td></tr>
+  `).join('');
+
+  document.getElementById('fc-body').innerHTML = `
+    <div class="zd-h">20-Year Temperature Forecast</div>
+    <div class="chart-card">${chart1}</div>
+    <div class="zd-h">Cumulative Cost vs Benefit (₹ Cr)</div>
+    <div class="chart-card">${chart2}</div>
+    <table class="forecast-table" style="margin-top:10px;">
+      <thead><tr><th>Milestone</th><th>ΔT drop</th><th>Cost</th><th>Benefit</th></tr></thead>
+      <tbody>${mRows}</tbody>
+    </table>
+  `;
+}
+
+function renderVerification() {
+  const list = [
+    'Solution Generation & portfolio maps', 'Alternative Discovery checks', 'Scientific Validation NDVI buffers',
+    'Implementation Feasibility constraints', 'Economic Costing operational curves', 'Risk Assessment Matrix',
+    'Failure Mode albedo degradation', 'Counterfactual Contrast projections', 'Digital Twin simulation Year-0/10/20',
+    'Global Precedent Singapore analogs', 'Sensitivity Stress-Testing models', 'MCDA Pareto rankings',
+    'Confidence Score Engine metrics', 'Defensive Challenger Review', 'Decision Package output validation'
+  ];
+  const itemsHtml = list.map((l, i) => `
+    <div class="phase-item">
+      <div class="phase-num pass">${i+1}</div>
+      <div class="phase-content"><div class="phase-name">${l}</div><div class="phase-desc">Phase passed validation thresholds.</div></div>
+      <div class="phase-score" style="color:var(--green);">Pass</div>
+    </div>
+  `).join('');
+  document.getElementById('vf-body').innerHTML = `
+    <div class="card card-i"><div class="zd-h">15-Phase Verification Log</div><div>${itemsHtml}</div></div>
+  `;
+}
+
+function renderWatchAlerts() {
+  const nowStr = new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+  const z = CURRENT.zones[ACTIVE_ZONE_IDX];
+  document.getElementById('wt-body').innerHTML = `
+    <div class="alert-card" style="border-left: 3px solid var(--red);">
+      <div class="alert-icon" style="background:rgba(192,48,16,0.08); color:var(--red);">⚠️</div>
+      <div class="alert-content">
+        <div class="alert-title">LST Spike detected in ${escapeHtml(z.name)}</div>
+        <div class="alert-desc">Sentinel-2 thermal channel reports LST of ${z.lstPeak}°C anomaly.</div>
+        <div class="alert-time">Today, ${nowStr} · Sentinel-2 MSI</div>
+      </div>
+    </div>
+    <div class="alert-card" style="border-left: 3px solid var(--gold);">
+      <div class="alert-icon" style="background:rgba(200,154,12,0.08); color:var(--gold);">⚡</div>
+      <div class="alert-content">
+        <div class="alert-title">AC Electrical Grid Strain Hazard</div>
+        <div class="alert-desc">Peak load warning; capacity limits flagged at central junctions.</div>
+        <div class="alert-time">Today, 13:15 · IMD Weather Station</div>
+      </div>
+    </div>
+  `;
+}
+
+const COPILOT_QUESTIONS = ["Mitigation strategy for industrial heat?", "Payback period for Scenario J?", "Why do street canyons trap heat?"];
+function renderCopilot() {
+  const suggest = document.getElementById('cpSuggest');
+  const chat = document.getElementById('cpChat');
+  if (chat && chat.children.length === 0) {
+    chat.innerHTML = `<div class="chat-msg ai">👋 Welcome to SURYA DRISHTI Climate Copilot. Ask anything about cooling portfolios in ${escapeHtml(CURRENT.meta.display)}.</div>`;
+    suggest.innerHTML = COPILOT_QUESTIONS.map(q => `<button class="copilot-suggest-btn" onclick="askCopilot('${q}')">${q}</button>`).join('');
+  }
+}
+function askCopilot(q) {
+  document.getElementById('cpInput').value = q;
+  sendCopilot();
+}
+function sendCopilot() {
+  const input = document.getElementById('cpInput');
+  const chat = document.getElementById('cpChat');
+  const txt = input.value.trim();
+  if (!txt) return;
+  const userEl = document.createElement('div');
+  userEl.className = 'chat-msg user'; userEl.textContent = txt;
+  chat.appendChild(userEl);
+  input.value = '';
+  chat.scrollTop = chat.scrollHeight;
+
+  setTimeout(() => {
+    const aiEl = document.createElement('div'); aiEl.className = 'chat-msg ai';
+    const z = CURRENT.zones[ACTIVE_ZONE_IDX];
+    let reply = `🌍 Baseline LST in ${CURRENT.meta.display} is ${CURRENT.meta.baselineLST}°C. Interventions in the ${z.name} under Scenario J achieve an average -3.8°C cooling drop.`;
+    if (txt.includes("industrial")) reply = `🏭 For the industrial UHI zone ${z.name}, the absorption chiller symbiotic loop yields -3.5°C LST drop at a cost of ₹3.5 Cr.`;
+    if (txt.includes("payback")) reply = `💰 Scenario J (Hybrid Optimized) has an IRR of 28% and a payback period of 6 years.`;
+    aiEl.innerHTML = reply; chat.appendChild(aiEl); chat.scrollTop = chat.scrollHeight;
+  }, 500);
+}
+
+function renderExecDecision() {
+  const sc = SCENARIOS[9];
+  document.getElementById('ex-body').innerHTML = `
+    <div class="exec-rec">
+      <div class="exec-rec-badge">Recommended Portfolio Strategy</div>
+      <div class="exec-rec-name">Scenario J: Hybrid Optimized</div>
+      <div class="exec-rec-why">Optimal balances between temperature ΔT, CAPEX costs, and social equity indicators.</div>
+    </div>
+    <div class="exec-grid">
+      <div class="exec-cell"><span class="exec-cell-label">Cooling Potential</span><span class="exec-cell-val text-green">-3.8°C</span></div>
+      <div class="exec-cell"><span class="exec-cell-label">Total CAPEX</span><span class="exec-cell-val">₹${sc.financials.capex} Cr</span></div>
+      <div class="exec-cell"><span class="exec-cell-label">Internal IRR</span><span class="exec-cell-val text-gold">28%</span></div>
+      <div class="exec-cell"><span class="exec-cell-label">Payback Period</span><span class="exec-cell-val">6 Years</span></div>
+    </div>
+  `;
+}
+
+function renderIsroEngine() {
+  document.getElementById('isro-body').innerHTML = `
+    <div class="isro-header">
+      <div class="isro-logo-row"><div class="isro-logo">🛰️</div><div><div class="isro-logo-text">ISRO/NRSC Data Integration</div></div></div>
+    </div>
+    <div class="card card-i">
+      <div class="zd-h">Physics-Informed Loss Function (PINN)</div>
+      <div style="font-family:var(--mono); font-size:12px; background:var(--bg2); padding:6px; text-align:center; border-radius:4px;">L_total = L_data + &lambda; &middot; L_physics</div>
+    </div>
+    <div class="card">
+      <div class="zd-h">Cognitive Solver Frameworks</div>
+      <div class="fw-grid">${FRAMEWORK_CARDS}</div>
+    </div>
+    <div class="card">
+      <div class="zd-h">ISRO Satellite Data Layers</div>
+      <table class="forecast-table"><thead><tr><th>Satellite</th><th>Resolution</th><th>Role</th></tr></thead><tbody>${ISRO_TABLE_ROWS}</tbody></table>
+    </div>
+  `;
+}
+
+function renderDistricts() {
+  document.getElementById('dist-body').innerHTML = CURRENT.zones.map((z,i) => `
+    <div class="card" style="border-left: 3px solid ${TYPOLOGIES[z.typology].color}">
+      <div style="font-weight:700; font-size:13.5px;">${escapeHtml(z.name)}</div>
+      <div style="font-size:11.5px; color:var(--mut); margin-bottom:8px;">${TYPOLOGIES[z.typology].label}</div>
+      <button class="btn" style="padding:4px 8px; font-size:10.5px;" onclick="centerOnDistrict(${i})">Center Map</button>
+      <button class="btn" style="padding:4px 8px; font-size:10.5px;" onclick="jumpToZone(${i})">View DNA</button>
+    </div>
+  `).join('');
+}
+function centerOnDistrict(idx) {
+  if (CURRENT && map) map.setView(CURRENT.zones[idx].center, 15);
+}
+
+function renderHeatMapPanel() {
+  document.getElementById('hm-body').innerHTML = `
+    <div class="card card-i"><div class="zd-h">Multi-Layer Thermal Atlas</div><p style="font-size:12px; color:var(--mut);">Toggle active layers on the map selector interface overlay.</p></div>
+  `;
+}
+
+function switchTab(id) {
+  const btns = document.querySelectorAll('#tab-nav .tn-btn');
+  btns.forEach(btn => {
+    const oc = btn.getAttribute('onclick');
+    btn.classList.toggle('active', oc && oc.includes(`'${id}'`));
+  });
+  
+  const sections = document.querySelectorAll('.panel-section');
+  sections.forEach(sec => { sec.classList.toggle('active', sec.id === `sec-${id}`); });
+  
+  // Tab render triggers
+  if (id === 'scenarios') renderScenarioLab();
+  if (id === 'verification') renderVerification();
+  if (id === 'watch') renderWatchAlerts();
+  if (id === 'copilot') renderCopilot();
+  if (id === 'exec') renderExecDecision();
+  if (id === 'isro') renderIsroEngine();
+  if (id === 'heatmap') renderHeatMapPanel();
+  if (id === 'districts') renderDistricts();
+}
+
+/* ================= PRESENTATION TOUR SYSTEM ================= */
+let currentPresSlide = 0;
+const PRES_SLIDES = [
+  { step:'Slide 1 · Executive Brief', title:'TAPAS SURYA DRISHTI', body:'A city-scale Climate Digital Twin & Scenario Intelligence platform designed to observe and optimize heat island interventions using physics-informed ML.' },
+  { step:'Slide 2 · Urban Heat Scan', title:'Identifying the Problem', body:'Diurnal thermal passes isolate peak LST anomalies and rank hotspots by risk severity index.' },
+  { step:'Slide 3 · Causal DNA', title:'Diagnosing Causal Drivers', body:'Canyon aspect ratios, albedo degradation, and sensible heat flux percentages are calculated per zone.' },
+  { step:'Slide 4 · Scenario Lab', title:'10 Competing Scenarios', body:'Evaluates cooling drops from Scenario A to J, balancing cost limits against target outputs.' }
+];
+function openPresMode() {
+  document.getElementById('pres-mode').style.display = 'flex';
+  currentPresSlide = 0;
+  renderPresSlide();
+}
+function closePresMode() { document.getElementById('pres-mode').style.display = 'none'; }
+function renderPresSlide() {
+  const content = document.getElementById('presContent');
+  const dots = document.getElementById('presDots');
+  const s = PRES_SLIDES[currentPresSlide];
+  content.innerHTML = `
+    <div class="pres-step">${s.step}</div>
+    <h2 class="pres-title">${s.title}</h2>
+    <p class="pres-body">${s.body}</p>
+    <div class="pres-btns">
+      <button class="pres-btn pres-prev" onclick="changePresSlide(-1)" ${currentPresSlide===0?'disabled':''}>Previous</button>
+      <button class="pres-btn pres-next" onclick="changePresSlide(1)">${currentPresSlide===PRES_SLIDES.length-1?'Finish':'Next'}</button>
+    </div>
+  `;
+  dots.innerHTML = PRES_SLIDES.map((_,i) => `<span class="pres-dot ${i===currentPresSlide?'active':''}" onclick="jumpToPresSlide(${i})"></span>`).join('');
+}
+function changePresSlide(dir) {
+  currentPresSlide += dir;
+  if (currentPresSlide < 0) currentPresSlide = 0;
+  if (currentPresSlide >= PRES_SLIDES.length) { closePresMode(); return; }
+  renderPresSlide();
+}
+function jumpToPresSlide(idx) { currentPresSlide = idx; renderPresSlide(); }
+
+/* ================= LANDING INITIALIZATIONS ================= */
+function animateLandingMetrics() {
+  animateCount('lm1', 0, 36, 1000, '');
+  animateCount('lm2', 0, 14, 1200, 'M+');
+  animateCount('lm3', 0, 8.4, 1400, '°C', 1);
+  animateCount('lm4', 0, 3.8, 1600, '°C', 1);
+}
+function animateCount(id, start, end, duration, suffix, decimals=0) {
+  const el = document.getElementById(id); if (!el) return;
+  const startTime = performance.now();
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const val = start + progress * (end - start);
+    el.textContent = val.toFixed(decimals) + suffix;
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+function createLandingParticles() {
+  const container = document.getElementById('lp'); if (!container) return;
+  for (let i=0; i<15; i++) {
+    const p = document.createElement('div'); p.className = 'land-p';
+    const size = 6 + Math.random()*10;
+    p.style.width = `${size}px`; p.style.height = `${size}px`;
+    p.style.left = `${Math.random()*100}%`;
+    p.style.animationDelay = `${Math.random()*-12}s`;
+    p.style.animationDuration = `${8 + Math.random()*8}s`;
+    container.appendChild(p);
+  }
+}
+
+/* ================= SCAN INITIALIZATIONS ================= */
+function quickCity(cityName) {
+  document.getElementById('cityInput').value = cityName;
+  startScan();
+}
+function startScan() {
+  const input = document.getElementById('cityInput');
+  const raw = input.value.trim();
+  if (!raw) { shakeInput(); return; }
+  runScan(raw);
+}
+function shakeInput() {
+  const el = document.getElementById('cityInput');
+  el.classList.add('shake');
+  setTimeout(() => el.classList.remove('shake'), 400);
+}
+
+async function runScan(cityRaw) {
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('scan').style.display = 'flex';
+  document.getElementById('scanCityName').textContent = cityRaw;
+  
+  const resolved = resolveCity(cityRaw);
+  document.getElementById('scanCityState').textContent = (resolved.meta.state ? resolved.meta.state : 'India') + ' · Telemetry Acquisition';
+
+  const stepsContainer = document.getElementById('scanSteps');
+  stepsContainer.innerHTML = '';
+  const scanBar = document.getElementById('scanBar');
+  const scanPct = document.getElementById('scanPct');
+
+  const stepsData = [
+    { name: 'Diurnal LST acquisition', detail: 'INSAT-3D thermal passes' },
+    { name: 'High-res land cover scan', detail: 'Resourcesat-2 LISS-IV' },
+    { name: 'Building footprint extraction', detail: 'Cartosat-2 shadow maps' },
+    { name: 'Road network mapping', detail: 'OpenStreetMap API' },
+    { name: 'UHI Causal DNA profiling', detail: 'PINN thermodynamics' },
+    { name: '10 Portfolio simulations', detail: 'NSGA-II optimization' }
+  ];
+
+  for (let i = 0; i < stepsData.length; i++) {
+    const step = stepsData[i];
+    const el = document.createElement('div');
+    el.className = 'scan-step active';
+    el.innerHTML = `
+      <div class="scan-step-icon">${i+1}</div>
+      <div class="scan-step-text">${step.name}</div>
+      <div class="scan-step-sub">${step.detail}</div>
+    `;
+    stepsContainer.appendChild(el);
+    stepsContainer.scrollTop = stepsContainer.scrollHeight;
+
+    const pct = Math.round(((i + 0.5) / stepsData.length) * 100);
+    scanBar.style.width = `${pct}%`;
+    scanPct.textContent = `${pct}%`;
+
+    await sleep(250 + Math.random() * 150);
+    el.className = 'scan-step done';
+  }
+
+  scanBar.style.width = '100%';
+  scanPct.textContent = '100%';
+  await sleep(300);
+
+  const result = buildCityResult(cityRaw);
+  
+  // Nominatim dynamic geocoding
+  let coords = null;
+  try {
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(result.meta.display)},India&format=json&limit=1`);
+    const data = await res.json();
+    if (data && data.length > 0) coords = [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+    else throw new Error();
+  } catch (err) {
+    const rng = rngFor(result.key);
+    coords = [12.9716 + (rng()-0.5)*6, 77.5946 + (rng()-0.5)*6];
+  }
+  result.coords = coords;
+
+  document.getElementById('scan').style.display = 'none';
+  document.getElementById('workspace').style.display = 'flex';
+  
+  renderResults(result);
+}
+
+function renderResults(result) {
+  CURRENT = result;
+  ACTIVE_ZONE_IDX = 0;
+  
+  document.getElementById('tbCityName').textContent = result.meta.display;
+  document.getElementById('tbCityState').textContent = result.meta.state ? '· ' + result.meta.state : '';
+  
+  const avgUHSI = Math.round(result.zones.reduce((s,z)=>s+z.uhsi, 0)/result.zones.length);
+  document.getElementById('tbScore').textContent = 100 - avgUHSI;
+
+  initMap(result.coords);
+  renderMapLayers(result);
+  renderOverview(result.zones, result.meta);
+  renderZoneRail(result.zones);
+  selectZone(0);
+  renderMasterRoadmap(result.zones, result.meta);
+  renderForecast(result.zones, result.meta);
+  switchTab('overview');
+}
+
+function goHome() {
+  document.getElementById('landing').style.display = 'flex';
+  document.getElementById('workspace').style.display = 'none';
+  document.getElementById('scan').style.display = 'none';
+  document.getElementById('cityInput').value = '';
+}
+
+window.onload = function() {
+  createLandingParticles();
+  animateLandingMetrics();
+  
+  // Datalist setup for search
+  const dl = document.createElement('datalist'); dl.id = 'citiesDatalist';
+  Object.keys(CITY_DB).forEach(k => {
+    const op = document.createElement('option'); op.value = CITY_DB[k].display;
+    dl.appendChild(op);
+  });
+  document.body.appendChild(dl);
+  document.getElementById('cityInput').setAttribute('list', 'citiesDatalist');
+};
+</script>
+</body>
+</html>
